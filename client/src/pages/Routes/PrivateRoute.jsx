@@ -6,9 +6,9 @@ import Spinner from "../components/Spinner";
 export default function PrivateRoute() {
   const { currentUser } = useSelector((state) => state.user);
   const [ok, setOk] = useState(false);
-  
+
   const authCheck = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/user-auth`, {
+    const res = await fetch("/api/user/user-auth", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -16,9 +16,7 @@ export default function PrivateRoute() {
       },
       credentials: "include",
     });
-    console.log(`pvt route ${currentUser}`);
     const data = await res.json();
-    console.log(`pvt route ${data}`);
     if (data.check) setOk(true);
     else setOk(false);
   };

@@ -13,12 +13,12 @@ const AllPackages = () => {
       setLoading(true);
       let url =
         filter === "offer" //offer
-          ? `${import.meta.env.VITE_API_URL}/api/package/get-packages?searchTerm=${search}&offer=true`
+          ? `/api/package/get-packages?searchTerm=${search}&offer=true`
           : filter === "latest" //latest
-            ? `${import.meta.env.VITE_API_URL}/api/package/get-packages?searchTerm=${search}&sort=createdAt`
+            ? `/api/package/get-packages?searchTerm=${search}&sort=createdAt`
             : filter === "top" //top rated
-              ? `${import.meta.env.VITE_API_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating`
-              : `${import.meta.env.VITE_API_URL}/api/package/get-packages?searchTerm=${search}`; //all
+              ? `/api/package/get-packages?searchTerm=${search}&sort=packageRating`
+              : `/api/package/get-packages?searchTerm=${search}`; //all
       const res = await fetch(url);
       const data = await res.json();
       if (data?.success) {
@@ -40,7 +40,7 @@ const AllPackages = () => {
   const handleDelete = async (packageId) => {
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/package/delete-package/${packageId}`, {
+      const res = await fetch(`/api/package/delete-package/${packageId}`, {
         method: "DELETE",
       });
       const data = await res.json();

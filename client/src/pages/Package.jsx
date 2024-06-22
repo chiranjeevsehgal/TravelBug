@@ -69,7 +69,7 @@ const Package = () => {
   const getPackageData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/package/get-package-data/${params?.id}`);
+      const res = await fetch(`/api/package/get-package-data/${params?.id}`);
       const data = await res.json();
       if (data?.success) {
         setPackageData({
@@ -119,7 +119,7 @@ const Package = () => {
     }
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rating/give-rating`, {
+      const res = await fetch("/api/rating/give-rating", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +144,7 @@ const Package = () => {
 
   const getRatings = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rating/get-ratings/${params.id}/4`);
+      const res = await fetch(`/api/rating/get-ratings/${params.id}/4`);
       const data = await res.json();
       if (data) {
         setPackageRatings(data);
@@ -159,7 +159,7 @@ const Package = () => {
   const checkRatingGiven = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`
+        `/api/rating/rating-given/${currentUser?._id}/${params?.id}`
       );
       const data = await res.json();
       setRatingGiven(data?.given);

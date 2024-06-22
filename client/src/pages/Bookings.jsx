@@ -73,7 +73,7 @@ const Bookings = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadUrl) => {
             const res = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/user/update-profile-photo/${currentUser._id}`,
+              `/api/user/update-profile-photo/${currentUser._id}`,
               {
                 method: "POST",
                 headers: {
@@ -105,7 +105,7 @@ const Bookings = () => {
   const handleLogout = async () => {
     try {
       dispatch(logOutStart());
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
+      const res = await fetch("/api/auth/logout");
       const data = await res.json();
       if (data?.success !== true) {
         dispatch(logOutFailure(data?.message));
@@ -127,7 +127,7 @@ const Bookings = () => {
     if (CONFIRM) {
       try {
         dispatch(deleteUserAccountStart());
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
+        const res = await fetch(`/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
         });
         const data = await res.json();
