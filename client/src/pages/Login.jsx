@@ -36,14 +36,10 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      // console.log(data);
+      console.log(data);
       if (data?.success) {
-        // console.log(data);
-        // alert(data.user.username)
-        // console.log(data.user);
         dispatch(loginSuccess(data?.user));
         alert(data?.message);
-
         navigate("/");  
       } else {
         dispatch(loginFailure(data?.message));
