@@ -15,6 +15,8 @@ const Search = () => {
   const [showMoreBtn, setShowMoreBtn] = useState(false);
   //   console.log(listings);
 
+  
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
@@ -36,7 +38,8 @@ const Search = () => {
       setShowMoreBtn(false);
       try {
         const searchQuery = urlParams.toString();
-        const res = await fetch(`https://travelbug-backend.vercel.app/api/package/get-packages?${searchQuery}`);
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+        const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`);
         const data = await res.json();
         setLoading(false);
         setAllPackages(data?.packages);

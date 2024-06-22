@@ -152,13 +152,14 @@ export default function ScrollDialog() {
   useEffect(() => {
     const fetchAllPackages = async () => {
       try {
-        const res = await fetch(`https://travelbug-backend.vercel.app/api/package/get-packages`);
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+        const res = await fetch(`${API_BASE_URL}/api/package/get-packages`);
         const data = await res.json();
         
         const destinations = data.packages.map(pkg => pkg.packageDestination);
         const destinationsString = destinations.join(", ");
         setPackageDestinations(destinationsString);
-        console.log(destinationsString);
+        // console.log(destinationsString);
       } catch (error) {
         console.log(error);
       }
