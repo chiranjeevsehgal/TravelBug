@@ -38,6 +38,7 @@ const Login = () => {
       const data = await res.json();
       console.log(data);
       if (data?.success) {
+        console.log(data);
         // alert(data.user.username)
         // console.log(data.user);
         dispatch(loginSuccess(data?.user));
