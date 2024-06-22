@@ -96,7 +96,8 @@ const Search = () => {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
-    const res = await fetch(`https://travelbug-backend.vercel.app/api/package/get-packages?${searchQuery}`);
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+    const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`);
     const data = await res.json();
     if (data?.packages?.length < 9) {
       setShowMoreBtn(false);
