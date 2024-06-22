@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PackageCard from "./PackageCard";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+
 const Search = () => {
   const navigate = useNavigate();
   const [sideBarSearchData, setSideBarSearchData] = useState({
@@ -35,8 +38,10 @@ const Search = () => {
       setLoading(true);
       setShowMoreBtn(false);
       try {
+
+        
         const searchQuery = urlParams.toString();
-        const res = await fetch(`/api/package/get-packages?${searchQuery}`);
+        const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`);
         const data = await res.json();
         setLoading(false);
         setAllPackages(data?.packages);
