@@ -35,6 +35,7 @@ const Login = () => {
         },
         body: JSON.stringify(formData),
       });
+      console.log(res);
       const data = await res.json();
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
@@ -42,8 +43,7 @@ const Login = () => {
         navigate("/");  
       } else {
         dispatch(loginFailure(data?.message));
-        // alert(data?.message);
-        
+        alert(data?.message);
       }
     } catch (error) {
       dispatch(loginFailure(error.message));
