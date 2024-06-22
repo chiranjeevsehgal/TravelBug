@@ -28,7 +28,7 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(loginStart());
-      const res = await fetch(`/api/auth/login`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
