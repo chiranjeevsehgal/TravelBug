@@ -38,7 +38,7 @@ const App = () => {
         <Route path="/profile" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="editprofile" element={<AdminUpdateProfile />} />
-          <Route path="adminpanel" element={<AdminPanel />} />
+          <Route path="dashboard" element={<AdminPanel />} />
           <Route path="admin/update-package/:id" element={<UpdatePackage />} />
         </Route>
         <Route path="/about" element={<About />} />

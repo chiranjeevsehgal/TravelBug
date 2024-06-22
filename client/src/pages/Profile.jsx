@@ -144,96 +144,94 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full min-h-screen p-4 bg-gray-100">
-      {currentUser ? (
-        <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-6 w-full max-w-4xl">
-          <div className="flex flex-col items-center gap-4 w-full">
-            <div className="relative w-40 h-40">
-              <img
-                src={
-                  (profilePhoto && URL.createObjectURL(profilePhoto)) ||
-                  formData.avatar
-                }
-                alt="Profile photo"
-                className="w-40 h-40 rounded-full object-cover cursor-pointer"
-                onClick={() => fileRef.current.click()}
-                onMouseOver={() => {
-                  document.getElementById("photoLabel").classList.add("block");
-                }}
-                onMouseOut={() => {
-                  document
-                    .getElementById("photoLabel")
-                    .classList.remove("block");
-                }}
-              />
-              <input
-                type="file"
-                name="photo"
-                id="photo"
-                hidden
-                ref={fileRef}
-                accept="image/*"
-                onChange={(e) => setProfilePhoto(e.target.files[0])}
-              />
-              <label
-                htmlFor="photo"
-                id="photoLabel"
-                className="absolute bottom-0 w-full bg-gray-700 bg-opacity-75 text-white text-center py-2 rounded-b-full hidden cursor-pointer"
-              >
-                Choose Photo
-              </label>
-            </div>
-            {profilePhoto && (
-              <div className="w-full flex justify-center mt-4">
-                <button
-                  onClick={() => handleProfilePhoto(profilePhoto)}
-                  className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-all"
-                >
-                  {loading ? `Uploading...(${photoPercentage}%)` : "Upload"}
-                </button>
+    <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        {currentUser ? (
+          <div className="bg-white shadow rounded-lg overflow-hidden">
+            <div className="px-4 py-5 sm:p-6">
+              <div className="flex flex-col items-center">
+                <div className="relative w-32 h-32 mb-4">
+                  <img
+                    src={(profilePhoto && URL.createObjectURL(profilePhoto)) || formData.avatar}
+                    alt="Profile photo"
+                    className="w-32 h-32 rounded-full object-cover cursor-pointer"
+                    onClick={() => fileRef.current.click()}
+                  />
+                  <input
+                    type="file"
+                    name="photo"
+                    id="photo"
+                    hidden
+                    ref={fileRef}
+                    accept="image/*"
+                    onChange={(e) => setProfilePhoto(e.target.files[0])}
+                  />
+                  <label
+                    htmlFor="photo"
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white rounded-full opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+                  >
+                    Change Photo
+                  </label>
+                </div>
+                {profilePhoto && (
+                  <button
+                    onClick={() => handleProfilePhoto(profilePhoto)}
+                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
+                  >
+                    {loading ? `Uploading...(${photoPercentage}%)` : "Upload"}
+                  </button>
+                )}
               </div>
-            )}
-            <div className="w-full border-b border-gray-300 my-4">
-              <span className="bg-white px-2 text-gray-700 text-lg font-semibold">
-                Details
-              </span>
-            </div>
-            <div className="w-full flex justify-between mb-4">
+
+              <div className="mt-6 border-t border-gray-200 pt-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Profile Details</h2>
+                <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Username</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{currentUser.username}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Email</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{currentUser.email}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Phone</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{currentUser.phone}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Address</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{currentUser.address}</dd>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-col sm:flex-row sm:justify-between">
+                <button
+                  onClick={handleLogout}
+                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
+                >
+                  Log out
+                </button>
+                <Link
+                  to="/profile/editprofile"
+                  className="w-full sm:w-auto px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors duration-200 text-center"
+                >
+                  Edit Profile
+                </Link>
+              </div>
+
               <button
-                onClick={handleLogout}
-                className="text-red-500 font-semibold border border-red-500 py-2 px-4 rounded-md hover:bg-red-500 hover:text-white transition-all"
+                onClick={handleDeleteAccount}
+                className="mt-6 w-full px-4 py-2 text-red-600 text-sm hover:underline"
               >
-                Log-out
+                Delete account
               </button>
-              <Link to="/profile/editprofile" className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-all">
-                <span>Edit Profile</span>
-              </Link>
             </div>
-            <div className="w-full bg-gray-50 shadow-inner rounded-lg p-4">
-              <p className="text-2xl font-bold mb-2">
-                Hi {currentUser.username}!
-              </p>
-              <p className="text-lg text-gray-700 mb-1">
-                Email: {currentUser.email}
-              </p>
-              <p className="text-lg text-gray-700 mb-1">
-                Phone: {currentUser.phone}
-              </p>
-              <p className="text-lg text-gray-700 mb-1">
-                Address: {currentUser.address}
-              </p>
-            </div>
-            <button
-              onClick={handleDeleteAccount}
-              className="text-red-600 mt-4 hover:underline"
-            >
-              Delete account
-            </button>
           </div>
-        </div>
-      ) : (
-        <div className="text-red-700 text-xl">Login First</div>
-      )}
+        ) : (
+          <div className="text-center text-red-600 text-xl">Please log in to view your profile.</div>
+        )}
+      </div>
     </div>
   );
 };

@@ -155,12 +155,12 @@ const AdminPanel = () => {
       <>
         <div className="w-full lg:w-2/3 mx-auto bg-white shadow-lg rounded-lg p-6">
           <div className="main-div">
-            <nav className="w-full border-red-500 border-b-4 overflow-x-auto navbar mb-4">
+            <nav className="w-full border-[#41A4FF] border-b-4 overflow-x-auto navbar mb-4">
               <div className="w-full flex gap-4 justify-center">
                 <button
                   className={
                     activePanelId === 1
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(1)}
@@ -170,7 +170,7 @@ const AdminPanel = () => {
                 <button
                   className={
                     activePanelId === 2
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(2)}
@@ -180,7 +180,7 @@ const AdminPanel = () => {
                 <button
                   className={
                     activePanelId === 3
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(3)}
@@ -190,7 +190,7 @@ const AdminPanel = () => {
                 <button
                   className={
                     activePanelId === 4
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(4)}
@@ -200,7 +200,7 @@ const AdminPanel = () => {
                 <button
                   className={
                     activePanelId === 5
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(5)}
@@ -210,7 +210,7 @@ const AdminPanel = () => {
                 <button
                   className={
                     activePanelId === 6
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(6)}
@@ -220,7 +220,7 @@ const AdminPanel = () => {
                 <button
                   className={
                     activePanelId === 7
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   onClick={() => setActivePanelId(7)}

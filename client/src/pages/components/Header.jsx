@@ -86,8 +86,9 @@ const Header = () => {
           {currentUser && (
             <li>
               <Link
-                to={`/profile/${currentUser.user_role === 1 ? "adminpanel" : "bookings"}`}
-                className={`hover:text-[#41A4FF] flex items-center gap-1 ${location.pathname.includes("/profile") ? "text-[#41A4FF]" : ""}`}
+                to={`/profile/${currentUser.user_role === 1 ? "dashboard" : "bookings"}`}
+                className={`hover:text-[#41A4FF] flex items-center gap-1 ${location.pathname.includes(currentUser.user_role === 1 ? "/dashboard" : "/bookings") ? "text-[#41A4FF]" : ""
+                  }`}
               >
                 <FaSuitcase />
                 <span>{currentUser.user_role === 1 ? "Admin Panel" : "Bookings"}</span>
@@ -98,7 +99,8 @@ const Header = () => {
             {currentUser ? (
               <Link
                 to={`/profile/${currentUser.user_role === 1 ? "admin" : "user"}`}
-                className="flex items-center gap-2 hover:text-[#41A4FF]"
+                className={`flex items-center gap-2 hover:text-[#41A4FF] ${location.pathname.includes(currentUser.user_role === 1 ? "/admin" : "/user") ? "text-[#41A4FF]" : ""
+                  }`}
               >
                 <img
                   src={currentUser.avatar || defaultProfileImg}
