@@ -36,8 +36,8 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
-      if (data.user) {
+      console.log(data.user);
+      if (data?.user) {
         dispatch(loginSuccess(data?.user));
         alert(data?.message);
         navigate("/");  
