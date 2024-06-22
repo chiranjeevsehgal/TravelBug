@@ -8,7 +8,8 @@ export default function AdminRoute() {
   const [ok, setOk] = useState(false);
 
   const authCheck = async () => {
-    const res = await fetch("/api/user/admin-auth", {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+    const res = await fetch(`${API_BASE_URL}/api/user/admin-auth`, {
       method: "GET",
       headers: {
         Accept: "application/json",
