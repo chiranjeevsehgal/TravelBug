@@ -14,8 +14,9 @@ const RatingsPage = () => {
   const getRatings = async () => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `/api/rating/get-ratings/${params.id}/999999999999`
+        `${API_BASE_URL}/api/rating/get-ratings/${params.id}/999999999999`
       );
       const res2 = await fetch(`/api/rating/average-rating/${params.id}`);
       const data = await res.json();
