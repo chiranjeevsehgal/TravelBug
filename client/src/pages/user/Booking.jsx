@@ -43,7 +43,7 @@ const Booking = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `/api/package/get-package-data/${params?.packageId}`
+        `${import.meta.env.VITE_API_URL}/api/package/get-package-data/${params?.packageId}`
       );
       const data = await res.json();
       if (data?.success) {
@@ -101,7 +101,7 @@ const Booking = () => {
     }
     try {
       setLoading(true);
-      const res = await fetch(`/api/booking/book-package/${params?.id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/booking/book-package/${params?.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

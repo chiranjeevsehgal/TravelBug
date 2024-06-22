@@ -14,7 +14,7 @@ const Payments = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `/api/booking/get-allBookings?searchTerm=${search}`
+        `${import.meta.env.VITE_API_URL}/api/booking/get-allBookings?searchTerm=${search}`
       );
       const data = await res.json();
       if (data?.success) {
@@ -41,7 +41,7 @@ const Payments = () => {
     if (CONFIRM) {
       try {
         setLoading(true);
-        const res = await fetch(`/api/booking/delete-booking/${bookingId}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/booking/delete-booking/${bookingId}`, {
           method: "DELETE",
         });
         const data = await res.json();
