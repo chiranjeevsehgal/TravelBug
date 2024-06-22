@@ -82,9 +82,10 @@ export const loginController = async (req, res) => {
     const { password: pass, ...rest } = validUser._doc; //deselcting password to send user(this will send all data accept password)
     res.cookie("access_token", token, { httpOnly: true }).status(200).send({
       success: true,
-      message: "Login Success",
+      message: `Login Success ${token}`,
       user: rest,
     });
+    
   } catch (error) {
     console.log(error);
   }

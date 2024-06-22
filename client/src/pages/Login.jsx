@@ -36,6 +36,7 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      console.log(data);
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
         alert(data?.message);
