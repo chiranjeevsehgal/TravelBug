@@ -36,9 +36,10 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      console.log(data);
       if (data?.success) {
         // alert(data.user.username)
-        console.log(data.user);
+        // console.log(data.user);
         dispatch(loginSuccess(data?.user));
         alert(data?.message);
 
