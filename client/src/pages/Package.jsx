@@ -145,7 +145,8 @@ const Package = () => {
 
   const getRatings = async () => {
     try {
-      const res = await fetch(`/api/rating/get-ratings/${params.id}/4`);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/rating/get-ratings/${params.id}/4`);
       const data = await res.json();
       if (data) {
         setPackageRatings(data);
