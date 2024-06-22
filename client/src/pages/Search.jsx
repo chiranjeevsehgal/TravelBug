@@ -36,7 +36,7 @@ const Search = () => {
       setShowMoreBtn(false);
       try {
         const searchQuery = urlParams.toString();
-        const res = await fetch(`/api/package/get-packages?${searchQuery}`);
+        const res = await fetch(`https://travelbug-backend.vercel.app/api/package/get-packages?${searchQuery}`);
         const data = await res.json();
         setLoading(false);
         setAllPackages(data?.packages);
@@ -93,7 +93,7 @@ const Search = () => {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
-    const res = await fetch(`/api/package/get-packages?${searchQuery}`);
+    const res = await fetch(`https://travelbug-backend.vercel.app/api/package/get-packages?${searchQuery}`);
     const data = await res.json();
     if (data?.packages?.length < 9) {
       setShowMoreBtn(false);

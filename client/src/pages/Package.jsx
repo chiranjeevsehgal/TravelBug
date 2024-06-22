@@ -69,7 +69,7 @@ const Package = () => {
   const getPackageData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`https://travelbug-backend.vercel.app/api/package/get-package-data/${params?.id}`);
+      const res = await fetch(`/api/package/get-package-data/${params?.id}`);
       const data = await res.json();
       if (data?.success) {
         setPackageData({
