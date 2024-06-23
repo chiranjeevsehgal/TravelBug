@@ -282,7 +282,7 @@ const Booking = () => {
                   </>
                 ) : (
                   <span className="text-green-700">
-                    ${packageData.packagePrice}
+                    Rs. {packageData.packagePrice}
                   </span>
                 )}
               </p>
@@ -332,7 +332,7 @@ const Booking = () => {
               <p className="text-xl font-semibold">
                 Total Price:
                 <span className="text-green-700">
-                  $
+                  Rs. 
                   {packageData.packageDiscountPrice
                     ? packageData.packageDiscountPrice * bookingData.persons
                     : packageData.packagePrice * bookingData.persons}
