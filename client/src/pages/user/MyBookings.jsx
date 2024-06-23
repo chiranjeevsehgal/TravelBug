@@ -15,7 +15,9 @@ const MyBookings = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-UserCurrentBookings/${currentUser?._id}?searchTerm=${searchTerm}`
+        `${API_BASE_URL}/api/booking/get-UserCurrentBookings/${currentUser?._id}?searchTerm=${searchTerm}`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
@@ -43,6 +45,7 @@ const MyBookings = () => {
         `${API_BASE_URL}/api/booking/cancel-booking/${id}/${currentUser._id}`,
         {
           method: "POST",
+          credentials:"include"
         }
       );
       const data = await res.json();

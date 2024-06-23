@@ -39,7 +39,9 @@ const Search = () => {
       try {
         const searchQuery = urlParams.toString();
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-        const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`);
+        const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`,{
+          credentials:"include"
+        });
         const data = await res.json();
         setLoading(false);
         setAllPackages(data?.packages);
@@ -97,7 +99,9 @@ const Search = () => {
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-    const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`);
+    const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`,{
+      credentials:"include"
+    });
     const data = await res.json();
     if (data?.packages?.length < 9) {
       setShowMoreBtn(false);

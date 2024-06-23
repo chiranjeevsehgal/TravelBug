@@ -16,9 +16,13 @@ const RatingsPage = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/rating/get-ratings/${params.id}/999999999999`
+        `${API_BASE_URL}/api/rating/get-ratings/${params.id}/999999999999`,{
+          credentials:"include"
+        }
       );
-      const res2 = await fetch(`${API_BASE_URL}/api/rating/average-rating/${params.id}`);
+      const res2 = await fetch(`${API_BASE_URL}/api/rating/average-rating/${params.id}`,{
+        credentials:"include"
+      });
       const data = await res.json();
       const data2 = await res2.json();
       if (data && data2) {

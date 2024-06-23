@@ -14,7 +14,9 @@ const MyHistory = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-allUserBookings/${currentUser?._id}?searchTerm=${search}`
+        `${API_BASE_URL}/api/booking/get-allUserBookings/${currentUser?._id}?searchTerm=${search}`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
@@ -42,6 +44,7 @@ const MyHistory = () => {
         `${API_BASE_URL}/api/booking/delete-booking-history/${id}/${currentUser._id}`,
         {
           method: "DELETE",
+          credentials:"include"
         }
       );
       const data = await res.json();

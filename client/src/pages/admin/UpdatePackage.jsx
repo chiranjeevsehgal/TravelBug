@@ -37,7 +37,9 @@ const UpdatePackage = () => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
-      const res = await fetch(`${API_BASE_URL}/api/package/get-package-data/${params?.id}`);
+      const res = await fetch(`${API_BASE_URL}/api/package/get-package-data/${params?.id}`,{
+        credentials:"include"
+      });
       const data = await res.json();
       if (data?.success) {
         // console.log(data);

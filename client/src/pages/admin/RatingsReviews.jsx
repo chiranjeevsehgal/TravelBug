@@ -19,7 +19,9 @@ const RatingsReviews = () => {
         filter === "most" //most rated
           ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageTotalRatings`
           : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating`; //all
-      const res = await fetch(url);
+      const res = await fetch(url,{
+        credentials:"include"
+      });
       const data = await res.json();
       if (data?.success) {
         setPackages(data?.packages);
@@ -50,7 +52,9 @@ const RatingsReviews = () => {
       filter === "most" //most rated
         ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageTotalRatings&startIndex=${startIndex}`
         : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating&startIndex=${startIndex}`; //all
-    const res = await fetch(url);
+    const res = await fetch(url,{
+      credentials:"include"
+    });
     const data = await res.json();
     if (data?.packages?.length < 9) {
       setShowMoreBtn(false);

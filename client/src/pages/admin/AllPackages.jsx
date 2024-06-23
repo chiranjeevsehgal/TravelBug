@@ -21,7 +21,9 @@ const AllPackages = () => {
             : filter === "top" //top rated
               ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating`
               : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}`; //all
-      const res = await fetch(url);
+      const res = await fetch(url,{
+        credentials:"include"
+      });
       const data = await res.json();
       if (data?.success) {
         setPackages(data?.packages);

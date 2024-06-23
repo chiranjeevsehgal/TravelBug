@@ -80,6 +80,7 @@ const Bookings = () => {
                 headers: {
                   "Content-Type": "application/json",
                 },
+                credentials:"include",
                 body: JSON.stringify({ avatar: downloadUrl }),
               }
             );
@@ -107,7 +108,9 @@ const Bookings = () => {
     try {
       dispatch(logOutStart());
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/auth/logout`);
+      const res = await fetch(`${API_BASE_URL}/api/auth/logout`,{
+        credentials:"include"
+      });
       const data = await res.json();
       if (data?.success !== true) {
         dispatch(logOutFailure(data?.message));
@@ -132,6 +135,7 @@ const Bookings = () => {
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
         const res = await fetch(`${API_BASE_URL}/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
+          credentials:"include"
         });
         const data = await res.json();
         if (data?.success === false) {

@@ -70,7 +70,9 @@ const Package = () => {
     try {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/package/get-package-data/${params?.id}`);
+      const res = await fetch(`${API_BASE_URL}/api/package/get-package-data/${params?.id}`,{
+        credentials:"include"
+      });
       const data = await res.json();
       if (data?.success) {
         setPackageData({
@@ -126,6 +128,7 @@ const Package = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials:"include",
         body: JSON.stringify(ratingsData),
       });
       const data = await res.json();
@@ -147,7 +150,9 @@ const Package = () => {
   const getRatings = async () => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/rating/get-ratings/${params.id}/4`);
+      const res = await fetch(`${API_BASE_URL}/api/rating/get-ratings/${params.id}/4`,{
+        credentials:"include"
+      });
       const data = await res.json();
       if (data) {
         setPackageRatings(data);
@@ -163,7 +168,9 @@ const Package = () => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`
+        `${API_BASE_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       setRatingGiven(data?.given);

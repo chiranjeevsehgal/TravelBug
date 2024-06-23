@@ -19,7 +19,9 @@ const Home = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/package/get-packages?sort=packageRating&limit=8`
+        `${API_BASE_URL}/api/package/get-packages?sort=packageRating&limit=8`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
@@ -39,7 +41,9 @@ const Home = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/package/get-packages?sort=createdAt&limit=8`
+        `${API_BASE_URL}/api/package/get-packages?sort=createdAt&limit=8`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
@@ -59,7 +63,9 @@ const Home = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/package/get-packages?sort=createdAt&offer=true&limit=6`
+        `${API_BASE_URL}/api/package/get-packages?sort=createdAt&offer=true&limit=6`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {

@@ -44,7 +44,9 @@ const Booking = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/package/get-package-data/${params?.packageId}`
+        `${API_BASE_URL}/api/package/get-package-data/${params?.packageId}`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
@@ -109,6 +111,7 @@ const Booking = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials:"include",
         body: JSON.stringify(bookingData),
       });
       const data = await res.json();
