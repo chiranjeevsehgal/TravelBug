@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { FaHome, FaSuitcase, FaUser } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { FaHome, FaSuitcase, FaUser, FaCaretDown } from "react-icons/fa";
 import defaultProfileImg from "../../assets/images/profile.png";
 import { useNavigate } from "react-router";
 
+import {
+  logOutStart,
+  logOutSuccess,
+  logOutFailure,
+} from "../../redux/user/userSlice";
+// } from ".../redux/user/userSlice";
+
+
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { currentUser } = useSelector((state) => state.user);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [search, setSearch] = useState("");
   const location = useLocation();
+
+  const dropdownRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+
 
   const handleSearch = () => {
     if (search !== "") {
@@ -25,6 +40,51 @@ const Header = () => {
     setIsNavOpen(!isNavOpen);
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      dispatch(logOutStart());
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/auth/logout`,{
+        credentials:"include"
+      });
+      const data = await res.json();
+      if (data?.success !== true) {
+        dispatch(logOutFailure(data?.message));
+        return;
+      }
+      dispatch(logOutSuccess());
+      setIsDropdownOpen(false)
+      navigate("/login");
+      alert(data?.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleProfileClick = () => {
+    setIsDropdownOpen(false);
+    navigate(`/profile/${currentUser.user_role === 1 ? "admin" : "user"}`);
+
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  
   return (
     <header className="bg-white text-gray-900 py-4 px-6 flex justify-between items-center shadow-md">
       {/* Logo */}
@@ -97,20 +157,40 @@ const Header = () => {
           )}
           <li>
             {currentUser ? (
-              <Link
-                to={`/profile/${currentUser.user_role === 1 ? "admin" : "user"}`}
-                className={`flex items-center gap-2 hover:text-[#41A4FF] ${location.pathname.includes(currentUser.user_role === 1 ? "/admin" : "/user") ? "text-[#41A4FF]" : ""
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={toggleDropdown}
+                  className={`flex items-center gap-2 hover:text-[#41A4FF] ${
+                    location.pathname.includes(currentUser.user_role === 1 ? "/admin" : "/user") ? "text-[#41A4FF]" : ""
                   }`}
-              >
-                <img
-                  src={currentUser.avatar || defaultProfileImg}
-                  alt={currentUser.username}
-                  className="w-10 h-10 rounded-full border border-gray-300"
-                />
-                <span>{currentUser.username}</span>
-              </Link>
+                >
+                  <img
+                    src={currentUser.avatar || defaultProfileImg}
+                    alt={currentUser.username}
+                    className="w-10 h-10 rounded-full border border-gray-300"
+                  />
+                  <span>{currentUser.username}</span>
+                  <FaCaretDown />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                    <button
+                      onClick={handleProfileClick}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Profile
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <Link to="/login" className="hover:text-[#41A4FF] flex items-center gap-1">
+              <Link to="/login" className={`hover:text-[#41A4FF] flex items-center gap-1 ${location.pathname === "/login" ? "text-[#41A4FF]" : ""}`}>
                 <FaUser />
                 <span>Login</span>
               </Link>

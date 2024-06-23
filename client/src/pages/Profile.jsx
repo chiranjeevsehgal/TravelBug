@@ -212,27 +212,27 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row sm:justify-between">
-                <button
+              <div className="mt-6 flex flex-col sm:flex-row sm:justify-between align-middle">
+                {/* <button
                   onClick={handleLogout}
                   className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
                 >
                   Log out
-                </button>
+                </button> */}
                 <Link
                   to="/profile/editprofile"
                   className="w-full sm:w-auto px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors duration-200 text-center"
                 >
                   Edit Profile
                 </Link>
-              </div>
 
               <button
                 onClick={handleDeleteAccount}
-                className="mt-6 w-full px-4 py-2 text-red-600 text-sm hover:underline"
+                className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
               >
                 Delete account
               </button>
+              </div>
             </div>
           </div>
         ) : (
