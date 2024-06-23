@@ -17,6 +17,7 @@ export default function AdminRoute() {
         "Content-Type": "application/json",
       },
     });
+    console.log(data);
     const data = await res.json();
     if (data.check) setOk(true);
     else setOk(false);
