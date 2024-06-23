@@ -11,7 +11,9 @@ const AllUsers = () => {
     try {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/user/getAllUsers?searchTerm=${search}`);
+      const res = await fetch(`${API_BASE_URL}/api/user/getAllUsers?searchTerm=${search}`,{
+        credentials:"include"
+      });
       const data = await res.json();
 
       if (data && data.success === false) {
