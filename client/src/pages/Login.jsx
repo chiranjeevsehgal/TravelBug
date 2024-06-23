@@ -34,12 +34,14 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials:"include",
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      // console.log(data);
+      console.log("Login response:", data); // Add this line
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
+        console.log("Cookies after login:", document.cookie); // Add this line
         alert(data?.message);
         navigate("/");  
       } else {

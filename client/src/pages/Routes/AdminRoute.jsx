@@ -11,6 +11,7 @@ export default function AdminRoute() {
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
     const res = await fetch(`${API_BASE_URL}/api/user/admin-auth`, {
       method: "GET",
+      credentials: 'include',
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
