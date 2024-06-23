@@ -78,7 +78,8 @@ const Booking = () => {
   //get paymentgateway token
   const getToken = async () => {
     try {
-      const { data } = await axios.get(`/api/package/braintree/token`);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const { data } = await axios.get(`${API_BASE_URL}/api/package/braintree/token`);
       setClientToken(data?.clientToken);
     } catch (error) {
       console.log(error);
