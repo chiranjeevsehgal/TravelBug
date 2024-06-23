@@ -154,12 +154,12 @@ const Bookings = () => {
       {currentUser ? (
         <div className="w-full lg:w-2/3 mx-auto bg-white shadow-lg rounded-lg p-6">
           <div className="w-full border-b border-gray-300 mb-4">
-            <nav className="w-full border-red-500 border-b-4 overflow-x-auto navbar mb-4">
+            <nav className="w-full border-[#41A4FF] border-b-4 overflow-x-auto navbar mb-4">
               <div className="w-full flex gap-4">
                 <button
                   className={
                     activePanelId === 1
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   id="bookings"
@@ -170,7 +170,7 @@ const Bookings = () => {
                 <button
                   className={
                     activePanelId === 2
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-red-500 text-white"
+                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
                       : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
                   }
                   id="updateProfile"
