@@ -15,7 +15,9 @@ const AllBookings = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-currentBookings?searchTerm=${searchTerm}`
+        `${API_BASE_URL}/api/booking/get-currentBookings?searchTerm=${searchTerm}`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
