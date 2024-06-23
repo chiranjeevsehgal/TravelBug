@@ -15,7 +15,9 @@ const Payments = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`
+        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`,{
+          credentials:"include"
+        }
       );
       const data = await res.json();
       if (data?.success) {
@@ -45,7 +47,9 @@ const Payments = () => {
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
         const res = await fetch(`${API_BASE_URL}/api/booking/delete-booking/${bookingId}`, {
           method: "DELETE",
+          credentials:"include"
         });
+        
         const data = await res.json();
         if (data?.success) {
           alert(data?.message);

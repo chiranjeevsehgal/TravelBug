@@ -139,6 +139,7 @@ const AddPackages = () => {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(`${API_BASE_URL}/api/package/create-package`, {
         method: "POST",
+        credentials:"include",
         headers: {
           "Content-Type": "application/json",
         },

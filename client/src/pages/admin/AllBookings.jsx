@@ -43,6 +43,8 @@ const AllBookings = () => {
         `${API_BASE_URL}/api/booking/cancel-booking/${id}/${currentUser._id}`,
         {
           method: "POST",
+          credentials:"include"
+          
         }
       );
       const data = await res.json();

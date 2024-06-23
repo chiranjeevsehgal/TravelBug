@@ -84,6 +84,7 @@ const AdminDashboard = () => {
               `${API_BASE_URL}/api/user/update-profile-photo/${currentUser._id}`,
               {
                 method: "POST",
+                credentials:"include",
                 headers: {
                   "Content-Type": " application/json",
                 },

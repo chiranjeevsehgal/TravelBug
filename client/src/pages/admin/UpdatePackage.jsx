@@ -174,6 +174,7 @@ const UpdatePackage = () => {
 
       const res = await fetch(`${API_BASE_URL}/api/package/update-package/${params?.id}`, {
         method: "POST",
+        credentials:"include",
         headers: {
           "Content-Type": "application/json",
         },
