@@ -39,6 +39,7 @@ const Login = () => {
       const data = await res.json();
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
+        
         alert(data?.message);
         navigate("/");  
       } else {

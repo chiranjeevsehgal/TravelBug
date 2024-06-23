@@ -8,6 +8,7 @@ export default function AdminRoute() {
   const [ok, setOk] = useState(false);
 
   const authCheck = async () => {
+    const token = localStorage.getItem('accessToken');
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
     const res = await fetch(`${API_BASE_URL}/api/user/admin-auth`, {
       method: "GET",
@@ -15,6 +16,8 @@ export default function AdminRoute() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
     });
     const data = await res.json();
