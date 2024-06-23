@@ -120,7 +120,8 @@ const Package = () => {
     }
     try {
       setLoading(true);
-      const res = await fetch("/api/rating/give-rating", {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/rating/give-rating`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -160,8 +161,9 @@ const Package = () => {
 
   const checkRatingGiven = async () => {
     try {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `/api/rating/rating-given/${currentUser?._id}/${params?.id}`
+        `${API_BASE_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`
       );
       const data = await res.json();
       setRatingGiven(data?.given);

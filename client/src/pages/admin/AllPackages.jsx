@@ -9,16 +9,18 @@ const AllPackages = () => {
 
   const getPackages = async () => {
     setPackages([]);
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+  
     try {
       setLoading(true);
       let url =
         filter === "offer" //offer
-          ? `/api/package/get-packages?searchTerm=${search}&offer=true`
+          ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&offer=true`
           : filter === "latest" //latest
-            ? `/api/package/get-packages?searchTerm=${search}&sort=createdAt`
+            ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=createdAt`
             : filter === "top" //top rated
-              ? `/api/package/get-packages?searchTerm=${search}&sort=packageRating`
-              : `/api/package/get-packages?searchTerm=${search}`; //all
+              ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating`
+              : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}`; //all
       const res = await fetch(url);
       const data = await res.json();
       if (data?.success) {
@@ -38,9 +40,10 @@ const AllPackages = () => {
   }, [filter, search]);
 
   const handleDelete = async (packageId) => {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
     try {
       setLoading(true);
-      const res = await fetch(`/api/package/delete-package/${packageId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/package/delete-package/${packageId}`, {
         method: "DELETE",
       });
       const data = await res.json();

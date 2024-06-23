@@ -23,7 +23,8 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/api/auth/signup`, formData);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await axios.post(`${API_BASE_URL}/api/auth/signup`, formData);
       if (res?.data?.success) {
         alert(res?.data?.message);
         navigate("/login");

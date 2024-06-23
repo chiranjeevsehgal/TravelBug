@@ -13,8 +13,10 @@ const History = () => {
   const getAllBookings = async () => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
       const res = await fetch(
-        `/api/booking/get-allBookings?searchTerm=${search}`
+        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`
       );
       const data = await res.json();
       if (data?.success) {
@@ -37,8 +39,9 @@ const History = () => {
   const handleHistoryDelete = async (id) => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `/api/booking/delete-booking-history/${id}/${currentUser._id}`,
+        `${API_BASE_URL}/api/booking/delete-booking-history/${id}/${currentUser._id}`,
         {
           method: "DELETE",
         }

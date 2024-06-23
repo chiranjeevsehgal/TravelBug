@@ -18,7 +18,7 @@ const RatingsPage = () => {
       const res = await fetch(
         `${API_BASE_URL}/api/rating/get-ratings/${params.id}/999999999999`
       );
-      const res2 = await fetch(`/api/rating/average-rating/${params.id}`);
+      const res2 = await fetch(`${API_BASE_URL}/api/rating/average-rating/${params.id}`);
       const data = await res.json();
       const data2 = await res2.json();
       if (data && data2) {

@@ -78,9 +78,10 @@ const AdminDashboard = () => {
           console.log(error);
         },
         () => {
+          const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadUrl) => {
             const res = await fetch(
-              `/api/user/update-profile-photo/${currentUser._id}`,
+              `${API_BASE_URL}/api/user/update-profile-photo/${currentUser._id}`,
               {
                 method: "POST",
                 headers: {

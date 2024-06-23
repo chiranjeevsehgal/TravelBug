@@ -11,12 +11,14 @@ const RatingsReviews = () => {
 
   const getPackages = async () => {
     setPackages([]);
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
     try {
       setLoading(true);
       let url =
         filter === "most" //most rated
-          ? `/api/package/get-packages?searchTerm=${search}&sort=packageTotalRatings`
-          : `/api/package/get-packages?searchTerm=${search}&sort=packageRating`; //all
+          ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageTotalRatings`
+          : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating`; //all
       const res = await fetch(url);
       const data = await res.json();
       if (data?.success) {
@@ -41,12 +43,13 @@ const RatingsReviews = () => {
   }, [filter, search]);
 
   const onShowMoreSClick = async () => {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
     const numberOfPackages = packages.length;
     const startIndex = numberOfPackages;
     let url =
       filter === "most" //most rated
-        ? `/api/package/get-packages?searchTerm=${search}&sort=packageTotalRatings&startIndex=${startIndex}`
-        : `/api/package/get-packages?searchTerm=${search}&sort=packageRating&startIndex=${startIndex}`; //all
+        ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageTotalRatings&startIndex=${startIndex}`
+        : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating&startIndex=${startIndex}`; //all
     const res = await fetch(url);
     const data = await res.json();
     if (data?.packages?.length < 9) {

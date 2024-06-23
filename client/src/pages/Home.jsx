@@ -17,8 +17,9 @@ const Home = () => {
   const getTopPackages = async () => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        "/api/package/get-packages?sort=packageRating&limit=8"
+        `${API_BASE_URL}/api/package/get-packages?sort=packageRating&limit=8`
       );
       const data = await res.json();
       if (data?.success) {
@@ -36,8 +37,9 @@ const Home = () => {
   const getLatestPackages = async () => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        "/api/package/get-packages?sort=createdAt&limit=8"
+        `${API_BASE_URL}/api/package/get-packages?sort=createdAt&limit=8`
       );
       const data = await res.json();
       if (data?.success) {
@@ -55,8 +57,9 @@ const Home = () => {
   const getOfferPackages = async () => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        "/api/package/get-packages?sort=createdAt&offer=true&limit=6"
+        `${API_BASE_URL}/api/package/get-packages?sort=createdAt&offer=true&limit=6`
       );
       const data = await res.json();
       if (data?.success) {
