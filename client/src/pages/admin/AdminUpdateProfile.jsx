@@ -62,7 +62,8 @@ const AdminUpdateProfile = () => {
     }
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +105,8 @@ const AdminUpdateProfile = () => {
     }
     try {
       dispatch(updatePassStart());
-      const res = await fetch(`/api/user/update-password/${currentUser._id}`, {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/user/update-password/${currentUser._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

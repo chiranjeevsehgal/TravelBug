@@ -112,7 +112,8 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     try {
       dispatch(logOutStart());
-      const res = await fetch("/api/auth/logout");
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/auth/logout`);
       const data = await res.json();
       if (data?.success !== true) {
         dispatch(logOutFailure(data?.message));
@@ -134,7 +135,8 @@ const AdminDashboard = () => {
     if (CONFIRM) {
       try {
         dispatch(deleteUserAccountStart());
-        const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+        const res = await fetch(`${API_BASE_URL}/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
         });
         const data = await res.json();
