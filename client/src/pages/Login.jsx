@@ -64,7 +64,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-gray-200 py-10">
+    <div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-gray-100 py-10">
       <div className="flex shadow-md">
         <div className="flex flex-wrap content-center justify-center rounded-md bg-white w-full md:w-[24rem] p-5 md:p-0" style={{ height: "auto", minHeight: "32rem" }}>
           <div className="w-full md:w-72">
