@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
 
 const History = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -53,11 +54,12 @@ const History = () => {
       const data = await res.json();
       if (data?.success) {
         setLoading(false);
-        alert(data?.message);
+        toast.success(data?.message)
         getAllBookings();
       } else {
         setLoading(false);
-        alert(data?.message);
+        toast.error(data?.message)
+
       }
     } catch (error) {
       console.log(error);
@@ -141,6 +143,10 @@ const History = () => {
           <p className="text-center">No history found.</p>
         )}
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import DropIn from "braintree-web-drop-in-react";
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Booking = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -100,7 +102,8 @@ const Booking = () => {
       bookingData.persons <= 0 ||
       bookingData.date === ""
     ) {
-      alert("All fields are required!");
+      toast.error("All fields are required!")
+
       return;
     }
     try {
@@ -117,11 +120,14 @@ const Booking = () => {
       const data = await res.json();
       if (data?.success) {
         setLoading(false);
-        alert(data?.message);
-        navigate(`/profile/${currentUser?.user_role === 1 ? "admin" : "user"}`);
+        toast.success(data?.message)
+        navigate(`/profile/${currentUser?.user_role === 1 ? "admin" : "bookings"}`);
+        // setTimeout(()=>{
+        // },1000)
       } else {
         setLoading(false);
-        alert(data?.message);
+        toast.error(data?.message)
+        
       }
     } catch (error) {
       console.log(error);
@@ -374,6 +380,10 @@ const Booking = () => {
           </div>
         </div>
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

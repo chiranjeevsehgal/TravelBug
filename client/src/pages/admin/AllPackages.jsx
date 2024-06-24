@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
+
 
 const AllPackages = () => {
   const [packages, setPackages] = useState([]);
@@ -30,7 +33,7 @@ const AllPackages = () => {
         setLoading(false);
       } else {
         setLoading(false);
-        alert(data?.message || "Something went wrong!");
+        toast.error(data?.message || "Something went wrong!")
       }
     } catch (error) {
       console.log(error);
@@ -51,7 +54,8 @@ const AllPackages = () => {
       });
       
       const data = await res.json();
-      alert(data?.message);
+      
+      toast.success(data?.message)
       getPackages();
       setLoading(false);
     } catch (error) {
@@ -165,6 +169,10 @@ const AllPackages = () => {
         ) : (
           <h1 className="text-center text-2xl">No Packages Yet!</h1>
         )}
+        <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       </div>
     </>
   );

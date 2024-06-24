@@ -6,6 +6,7 @@ import {
   loginFailure,
 } from "../redux/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-  // console.log(formData);
 
   const handleChange = (e) => {
     setFormData({
@@ -23,6 +23,9 @@ const Login = () => {
       [e.target.id]: e.target.value,
     });
   };
+
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,19 +37,25 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log("Login response:", data); // Add this line
+      console.log("Login response:", data);
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
-        console.log("Cookies after login:", document.cookie); // Add this line
-        alert(data?.message);
-        navigate("/");  
+        
+        toast.success("Login Successful")
+        console.log("Cookies after login:", document.cookie);
+
+
+        navigate("/");
+        // setTimeout(()=>{
+        // },2000)
       } else {
         dispatch(loginFailure(data?.message));
-        alert(data?.message);
+        toast.error(data?.message);  // Use toast.error for error messages
+
       }
     } catch (error) {
       dispatch(loginFailure(error.message));
@@ -55,43 +64,76 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <form onSubmit={handleSubmit} className="w-2/6 max-w-sm px-8 py-6 bg-gray-100 rounded-lg shadow-xl">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Login</h1>
-        <div className="space-y-4 mt-4">
-          <div className="flex flex-col">
-            <label htmlFor="email" className="mb-2 font-semibold">Email:</label>
-            <input
-              type="email"
-              id="email"
-              className="p-3 text-gray-700 border rounded focus:border-blue-500 focus:ring-blue-500"
-              onChange={handleChange}
-              required
-            />
+    <div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-gray-200 py-10">
+      <div className="flex shadow-md">
+        <div className="flex flex-wrap content-center justify-center rounded-md bg-white w-full md:w-[24rem] p-5 md:p-0" style={{ height: "auto", minHeight: "32rem" }}>
+          <div className="w-full md:w-72">
+            <h1 className="text-xl font-semibold">Welcome back</h1>
+            <small className="text-gray-400">Welcome back! Please enter your details</small>
+
+            <form className="mt-4" onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="email" className="mb-2 block text-xs font-semibold">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="password" className="mb-2 block text-xs font-semibold">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="*****"
+                  className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="mb-3 flex flex-wrap content-center justify-end">
+                <a href="#" className="text-xs font-semibold text-[#41A4FF]">Forgot password?</a>
+              </div>
+
+              <div className="mb-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full text-center text-white bg-[#41A4FF] hover:bg-[#41A4FF] py-2 rounded-md mb-4"
+                >
+                  {loading ? "Loading..." : "Sign in"}
+                </button>
+                <button className="flex items-center justify-center w-full border border-gray-300 hover:border-gray-500 py-2 rounded-md">
+                  <img className="w-5 mr-2" src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google logo" />
+                  Sign in with Google
+                </button>
+              </div>
+            </form>
+
+            <div className="text-center mt-6">
+              <span className="text-sm text-gray-500">Don't have account?</span>
+              <Link to="/signup" className="text-sm font-semibold text-[#41A4FF] ml-1">Sign up</Link>
+            </div>
+
+            {error && <p className="text-sm text-center text-red-600 mt-3">{error}</p>}
           </div>
-          <div className="flex flex-col">
-            <label htmlFor="password" className="mb-2 font-semibold">Password:</label>
-            <input
-              type="password"
-              id="password"
-              className="p-3 text-gray-700 border rounded focus:border-blue-500 focus:ring-blue-500"
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <p className="text-sm text-center text-blue-600 hover:underline">
-            <Link to={`/signup`}>Don't have an account? Signup</Link>
-          </p>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full p-3 text-white bg-blue-600 rounded hover:bg-blue-700 ${loading ? "bg-blue-300" : ""}`}
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
-          {error && <p className="text-sm text-center text-red-600">{error}</p>}
         </div>
-      </form>
+
+        <div className="hidden md:flex md:flex-wrap content-center justify-center rounded-r-md" style={{ width: "24rem", height: "32rem" }}>
+          <img className="w-full h-full bg-center bg-no-repeat bg-cover rounded-r-md" src="images/login.jpg" alt="Login banner" />
+        </div>
+      </div>
+
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+
     </div>
   );
 };

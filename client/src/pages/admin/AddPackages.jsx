@@ -6,6 +6,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import toast, { Toaster } from 'react-hot-toast';
+import { CiCircleInfo } from "react-icons/ci";
 
 const AddPackages = () => {
   const [formData, setFormData] = useState({
@@ -104,7 +106,7 @@ const AddPackages = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.packageImages.length === 0) {
-      alert("You must upload at least 1 image");
+      toast.error("You must upload at least 1 image")
       return;
     }
     if (
@@ -117,15 +119,17 @@ const AddPackages = () => {
       formData.packageActivities === "" ||
       formData.packagePrice === 0
     ) {
-      alert("All fields are required!");
+      
+      toast.error("All fields are required!")
       return;
     }
     if (formData.packagePrice < 0) {
-      alert("Price should be greater than 500!");
+      toast.error("Price should be greater than 500!")
       return;
     }
     if (formData.packageDiscountPrice >= formData.packagePrice) {
-      alert("Regular Price should be greater than Discount Price!");
+      
+      toast.error("Regular Price should be greater than Discount Price!");
       return;
     }
     if (formData.packageOffer === false) {
@@ -152,7 +156,11 @@ const AddPackages = () => {
       }
       setLoading(false);
       setError(false);
-      alert(data?.message);
+      
+      toast(data?.message, {
+        icon: <CiCircleInfo />,
+      });
+      
       setFormData({
         packageName: "",
         packageDescription: "",
@@ -356,6 +364,10 @@ const AddPackages = () => {
           )}
         </form>
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </>
   );
 };

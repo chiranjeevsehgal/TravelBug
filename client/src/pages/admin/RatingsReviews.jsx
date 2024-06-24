@@ -1,6 +1,7 @@
 import { Rating } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 const RatingsReviews = () => {
   const [packages, setPackages] = useState([]);
@@ -28,7 +29,7 @@ const RatingsReviews = () => {
         setLoading(false);
       } else {
         setLoading(false);
-        alert(data?.message || "Something went wrong!");
+        toast.error(data?.message || "Something went wrong!")
       }
       if (data?.packages?.length > 8) {
         setShowMoreBtn(true);
@@ -151,6 +152,10 @@ const RatingsReviews = () => {
             Show More
           </button>
         )}
+        <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       </div>
     </>
   );

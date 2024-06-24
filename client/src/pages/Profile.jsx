@@ -22,6 +22,7 @@ import { app } from "../firebase";
 import MyBookings from "./user/MyBookings";
 import UpdateProfile from "./user/UpdateProfile";
 import MyHistory from "./user/MyHistory";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -87,7 +88,8 @@ const Profile = () => {
             );
             const data = await res.json();
             if (data?.success) {
-              alert(data?.message);
+              
+              toast.success(data?.message)
               setFormData({ ...formData, avatar: downloadUrl });
               dispatch(updateUserSuccess(data?.user));
               setProfilePhoto(null);
@@ -96,7 +98,8 @@ const Profile = () => {
               dispatch(updateUserFailure(data?.message));
             }
             dispatch(updateUserFailure(data?.message));
-            alert(data?.message);
+            
+            toast.success(data?.message)
           });
         }
       );
@@ -105,25 +108,6 @@ const Profile = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      dispatch(logOutStart());
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/auth/logout`,{
-        credentials:"include"
-      });
-      const data = await res.json();
-      if (data?.success !== true) {
-        dispatch(logOutFailure(data?.message));
-        return;
-      }
-      dispatch(logOutSuccess());
-      navigate("/login");
-      alert(data?.message);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
@@ -141,11 +125,17 @@ const Profile = () => {
         const data = await res.json();
         if (data?.success === false) {
           dispatch(deleteUserAccountFailure(data?.message));
-          alert("Something went wrong!");
+          
+          toast.error("Something went wrong!")
           return;
         }
         dispatch(deleteUserAccountSuccess());
-        alert(data?.message);
+        
+        toast.success(data?.message)
+        navigate("/");
+
+        // setTimeout(()=>{
+        // },2000)
       } catch (error) {}
     }
   };
@@ -239,6 +229,11 @@ const Profile = () => {
           <div className="text-center text-red-600 text-xl">Please log in to view your profile.</div>
         )}
       </div>
+      
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

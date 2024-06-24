@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Payments = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -52,16 +53,16 @@ const Payments = () => {
         
         const data = await res.json();
         if (data?.success) {
-          alert(data?.message);
+          toast.success(data?.message)
           getAllBookings();
         } else {
-          alert("Something went wrong!");
+          toast.error("Something went wrong!")
         }
         setLoading(false);
       } catch (error) {
         console.log(error);
         setLoading(false);
-        alert("Something went wrong!");
+        toast.error("Something went wrong!")
       }
     }
   };
@@ -137,6 +138,10 @@ const Payments = () => {
           <p className="text-center">No payments found.</p>
         )}
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

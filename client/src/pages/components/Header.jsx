@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FaHome, FaSuitcase, FaUser, FaCaretDown } from "react-icons/fa";
 import defaultProfileImg from "../../assets/images/profile.png";
 import { useNavigate } from "react-router";
+import toast, { Toaster } from 'react-hot-toast';
 
 import {
   logOutStart,
@@ -27,14 +28,7 @@ const Header = () => {
 
 
 
-  const handleSearch = () => {
-    if (search !== "") {
-      navigate(`/packages?searchTerm=${search}`);
-      setSearch("");
-    } else {
-      alert("Enter to search");
-    }
-  };
+  
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -58,9 +52,13 @@ const Header = () => {
       }
       dispatch(logOutSuccess());
       setIsDropdownOpen(false)
+      
+      
+      toast.success(data?.message)
       navigate("/login");
-      alert(data?.message);
+      
     } catch (error) {
+      toast.error(error)
       console.log(error);
     }
   };
@@ -198,6 +196,10 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </header>
   );
 };

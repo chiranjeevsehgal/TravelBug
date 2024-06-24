@@ -7,6 +7,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { useNavigate, useParams } from "react-router";
+import toast, { Toaster } from 'react-hot-toast';
 
 const UpdatePackage = () => {
   const params = useParams();
@@ -59,7 +60,7 @@ const UpdatePackage = () => {
           packageImages: data?.packageData?.packageImages,
         });
       } else {
-        alert(data?.message || "Something went wrong!");
+        toast.error(data?.message || "Something went wrong!")
       }
     } catch (error) {
       console.log(error);
@@ -142,7 +143,8 @@ const UpdatePackage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.packageImages.length === 0) {
-      alert("You must upload atleast 1 image");
+      
+      toast.error("You must upload atleast 1 image")
       return;
     }
     if (
@@ -155,15 +157,15 @@ const UpdatePackage = () => {
       formData.packageActivities === "" ||
       formData.packagePrice === 0
     ) {
-      alert("All fields are required!");
+      toast.error("All fields are required!")
       return;
     }
     if (formData.packagePrice < 0) {
-      alert("Price should be greater than 500!");
+      toast.error("Price should be greater than 500!")
       return;
     }
     if (formData.packageDiscountPrice >= formData.packagePrice) {
-      alert("Regular Price should be greater than Discount Price!");
+      toast.error("Regular Price should be greater than Discount Price!")
       return;
     }
     if (formData.packageOffer === false) {
@@ -189,7 +191,8 @@ const UpdatePackage = () => {
       }
       setLoading(false);
       setError(false);
-      alert(data?.message);
+      
+      toast.success(data?.message)
       // getPackageData();
       // setImages([]);
       navigate(`/package/${params?.id}`);
@@ -404,6 +407,10 @@ const UpdatePackage = () => {
               : "Upload Images"}
           </button>
         </div>
+        <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       </div>
     </>
   );

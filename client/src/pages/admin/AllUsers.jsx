@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
 
 const AllUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
@@ -52,12 +53,12 @@ const AllUsers = () => {
         
         const data = await res.json();
         setLoading(false);
-        alert(data.message);
+        toast.success(data.message)
         getUsers();
       } catch (error) {
         console.log(error);
         setLoading(false);
-        alert("Something went wrong. Please try again later.");
+        toast.error("Something went wrong. Please try again later.")
       }
     }
   };
@@ -118,6 +119,10 @@ const AllUsers = () => {
           <p className="text-center">No users found.</p>
         )}
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateUserStart,
@@ -8,8 +9,14 @@ import {
   updatePassSuccess,
   updatePassFailure,
 } from "../../redux/user/userSlice";
+import { CiCircleInfo } from "react-icons/ci";
+
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const UpdateProfile = () => {
+  const navigate = useNavigate();
+
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [updateProfileDetailsPanel, setUpdateProfileDetailsPanel] =
@@ -60,7 +67,8 @@ const UpdateProfile = () => {
       currentUser.address === formData.address &&
       currentUser.phone === formData.phone
     ) {
-      alert("Change atleast 1 field to update details");
+      
+      toast.error("Change atleast 1 field to update details.")
       return;
     }
     try {
@@ -78,16 +86,23 @@ const UpdateProfile = () => {
       if (data.success === false && res.status !== 201 && res.status !== 200) {
         dispatch(updateUserSuccess());
         dispatch(updateUserFailure(data?.messsage));
-        alert("Session Ended! Please login again");
+        toast.error("Session Ended! Please login again.")
         navigate("/login");
         return;
       }
       if (data.success && res.status === 201) {
-        alert(data?.message);
+        
+        toast.success(data?.message)
+        // setTimeout(()=>{
+        // },1000)
+        navigate("/profile/user");
         dispatch(updateUserSuccess(data?.user));
         return;
       }
-      alert(data?.message);
+      
+      toast(data?.message, {
+        icon: <CiCircleInfo />,
+      });
       return;
     } catch (error) {
       console.log(error);
@@ -100,11 +115,12 @@ const UpdateProfile = () => {
       updatePassword.oldpassword === "" ||
       updatePassword.newpassword === ""
     ) {
-      alert("Enter a valid password");
+      toast.error("Enter a valid password.")
       return;
     }
-    if (updatePassword.oldpassword === updatePassword.newpassword) {
-      alert("New password can't be same!");
+    if (updatePassword.oldpassword === updatePassword.newpassword) {      
+      toast.error("New password can't be same as old.")
+
       return;
     }
     try {
@@ -122,16 +138,22 @@ const UpdateProfile = () => {
       if (data.success === false && res.status !== 201 && res.status !== 200) {
         dispatch(updateUserSuccess());
         dispatch(updatePassFailure(data?.message));
-        alert("Session Ended! Please login again");
+        
+        toast.error("Session Ended! Please login again.")
         navigate("/login");
         return;
       }
       dispatch(updatePassSuccess());
-      alert(data?.message);
+      
+      
+      toast(data?.message, {
+        icon: <CiCircleInfo />,
+      });
       setUpdatePassword({
         oldpassword: "",
         newpassword: "",
       });
+      navigate("/profile/user");
       return;
     } catch (error) {
       console.log(error);
@@ -243,6 +265,10 @@ const UpdateProfile = () => {
           >
             {loading ? "Loading..." : "Back"}
           </button>
+          <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
         </div>
       )}
     </div>

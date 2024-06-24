@@ -18,11 +18,14 @@ import {
   FaCar,
   FaHiking,
 } from "react-icons/fa";
+import { CiCircleInfo } from "react-icons/ci";
+
 import Rating from "@mui/material/Rating";
 import { useSelector } from "react-redux";
 import RatingCard from "./RatingCard";
 import Chat from "./user/Chat";
 import "./styles/Chat.css";
+import toast from "react-hot-toast";
 
 const Package = () => {
   SwiperCore.use([Navigation]);
@@ -105,11 +108,15 @@ const Package = () => {
   const giveRating = async () => {
     checkRatingGiven();
     if (ratingGiven) {
-      alert("You already submittd your rating!");
+      // alert("You already submittd your rating!");
+      toast('You already submitted your rating!', {
+        icon: <CiCircleInfo />,
+      });
       return;
     }
     if (ratingsData.rating === 0 && ratingsData.review === "") {
-      alert("Atleast 1 field is required!");
+      // alert("Atleast 1 field is required!");
+      toast.error("Atleast 1 field is required!")
       return;
     }
     if (
@@ -117,7 +124,8 @@ const Package = () => {
       ratingsData.review === "" &&
       !ratingsData.userRef
     ) {
-      alert("All fields are required!");
+      // alert("All fields are required!");
+      toast.error("All fields are required!")
       return;
     }
     try {
@@ -134,13 +142,15 @@ const Package = () => {
       const data = await res.json();
       if (data?.success) {
         setLoading(false);
-        alert(data?.message);
+        // alert(data?.message);
+        toast.success(data?.message)
         getPackageData();
         getRatings();
         checkRatingGiven();
       } else {
         setLoading(false);
-        alert(data?.message || "Something went wrong!");
+        toast.error(data?.message || "Something went wrong!")
+        // alert(data?.message || "Something went wrong!");
       }
     } catch (error) {
       console.log(error);

@@ -11,10 +11,7 @@ import ScrollDialog from "./components/Recommender";
 
 
 const Home = () => {
-  const handleFabClick = () => {
-    
-    alert("FAB clicked! Open AI place recommendation.");
-  };
+  
 
   return (
     <div>

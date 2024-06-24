@@ -8,6 +8,9 @@ import {
   updatePassSuccess,
   updatePassFailure,
 } from "../../redux/user/userSlice";
+import toast, { Toaster } from 'react-hot-toast';
+import { CiCircleInfo } from "react-icons/ci";
+
 
 const AdminUpdateProfile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -57,7 +60,7 @@ const AdminUpdateProfile = () => {
       currentUser.address === formData.address &&
       currentUser.phone === formData.phone
     ) {
-      alert("Change atleast 1 field to update details");
+      toast.error("Change atleast 1 field to update details")
       return;
     }
     try {
@@ -75,16 +78,21 @@ const AdminUpdateProfile = () => {
       if (data.success === false && res.status !== 201 && res.status !== 200) {
         dispatch(updateUserSuccess());
         dispatch(updateUserFailure(data?.messsage));
-        alert("Session Ended! Please login again");
+
+        toast.error("Session Ended! Please login again")
         navigate("/login");
         return;
       }
       if (data.success && res.status === 201) {
-        alert(data?.message);
+        
+        toast.success(data?.message)
         dispatch(updateUserSuccess(data?.user));
         return;
       }
-      alert(data?.message);
+      toast(data?.message, {
+        icon: <CiCircleInfo />,
+      });
+      
       return;
     } catch (error) {
       console.log(error);
@@ -97,11 +105,11 @@ const AdminUpdateProfile = () => {
       updatePassword.oldpassword === "" ||
       updatePassword.newpassword === ""
     ) {
-      alert("Enter a valid password");
+      toast.error("Enter a valid password")
       return;
     }
     if (updatePassword.oldpassword === updatePassword.newpassword) {
-      alert("New password can't be same!");
+      toast.error("New password can't be same!")
       return;
     }
     try {
@@ -120,12 +128,16 @@ const AdminUpdateProfile = () => {
       if (data.success === false && res.status !== 201 && res.status !== 200) {
         dispatch(updateUserSuccess());
         dispatch(updatePassFailure(data?.message));
-        alert("Session Ended! Please login again");
+        toast.error("Session Ended! Please login again")
         navigate("/login");
         return;
       }
       dispatch(updatePassSuccess());
-      alert(data?.message);
+      
+      toast(data?.message, {
+        icon: <CiCircleInfo />,
+      });
+      
       setUpdatePassword({
         oldpassword: "",
         newpassword: "",
@@ -247,6 +259,10 @@ const AdminUpdateProfile = () => {
           </button>
         </div>
       )}
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

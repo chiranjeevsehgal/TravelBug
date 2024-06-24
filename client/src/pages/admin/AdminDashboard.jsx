@@ -29,6 +29,9 @@ import Payments from "./Payments";
 import RatingsReviews from "./RatingsReviews";
 import History from "./History";
 
+import toast, { Toaster } from 'react-hot-toast';
+
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -93,7 +96,7 @@ const AdminDashboard = () => {
             );
             const data = await res.json();
             if (data?.success) {
-              alert(data?.message);
+              toast.success(data?.message)
               setFormData({ ...formData, avatar: downloadUrl });
               dispatch(updateUserSuccess(data?.user));
               setProfilePhoto(null);
@@ -102,32 +105,11 @@ const AdminDashboard = () => {
               dispatch(updateUserFailure(data?.message));
             }
             dispatch(updateUserFailure(data?.message));
-            alert(data?.message);
+            
+            toast.error(data?.message)
           });
         }
       );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      dispatch(logOutStart());
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/auth/logout`,
-        {
-          credentials:"include"
-        }
-      );
-      const data = await res.json();
-      if (data?.success !== true) {
-        dispatch(logOutFailure(data?.message));
-        return;
-      }
-      dispatch(logOutSuccess());
-      navigate("/login");
-      alert(data?.message);
     } catch (error) {
       console.log(error);
     }
@@ -149,11 +131,13 @@ const AdminDashboard = () => {
         const data = await res.json();
         if (data?.success === false) {
           dispatch(deleteUserAccountFailure(data?.message));
-          alert("Something went wrong!");
+          
+          toast.error("Something went wrong!")
           return;
         }
         dispatch(deleteUserAccountSuccess());
-        alert(data?.message);
+        
+        toast.success(data?.message)
       } catch (error) {}
     }
   };
@@ -247,6 +231,11 @@ const AdminDashboard = () => {
           <div className="text-center text-red-600 text-xl">Please log in to view the admin dashboard.</div>
         )}
       </div>
+      
+<Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };

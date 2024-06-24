@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 const MyBookings = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -15,8 +16,8 @@ const MyBookings = () => {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-UserCurrentBookings/${currentUser?._id}?searchTerm=${searchTerm}`,{
-          credentials:"include"
+        `${API_BASE_URL}/api/booking/get-UserCurrentBookings/${currentUser?._id}?searchTerm=${searchTerm}`, {
+          credentials: "include"
         }
       );
       const data = await res.json();
@@ -30,6 +31,8 @@ const MyBookings = () => {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      setError("An error occurred while fetching bookings.");
     }
   };
 
@@ -45,74 +48,87 @@ const MyBookings = () => {
         `${API_BASE_URL}/api/booking/cancel-booking/${id}/${currentUser._id}`,
         {
           method: "POST",
-          credentials:"include"
+          credentials: "include"
         }
       );
       const data = await res.json();
       if (data?.success) {
         setLoading(false);
-        alert(data?.message);
+        toast.success(data?.message)
         getAllBookings();
       } else {
         setLoading(false);
-        alert(data?.message);
+        toast.error(data?.message)
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      toast.error("An error occurred while canceling the booking.");
     }
   };
 
   return (
     <div className="w-full flex justify-center">
       <div className="w-[95%] shadow-xl rounded-lg p-3 flex flex-col gap-2">
-        {loading && <h1 className="text-center text-2xl">Loading...</h1>}
-        {error && <h1 className="text-center text-2xl">{error}</h1>}
-        <div className="w-full">
+      {loading && <h1 className="text-center text-xl">Loading...</h1>}
+      {error && <h1 className="text-center text-2xl text-red-600">{error}</h1>}
+        <div className="w-full mb-4">
           <input
             className="border rounded-lg p-2 mb-2 w-full"
             type="text"
             placeholder="Search"
             value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        {!loading &&
-          currentBookings &&
-          currentBookings.map((booking, i) => {
-            return (
-              <div
-                className="w-full border-y-2 p-3 flex flex-wrap overflow-auto gap-3 items-center justify-between"
-                key={i}
-              >
-                <Link to={`/package/${booking?.packageDetails?._id}`}>
-                  <img
-                    className="w-12 h-12"
-                    src={booking?.packageDetails?.packageImages[0]}
-                    alt="Package Image"
-                  />
-                </Link>
-                <Link to={`/package/${booking?.packageDetails?._id}`}>
-                  <p className="hover:underline">
-                    {booking?.packageDetails?.packageName}
-                  </p>
-                </Link>
-                <p>{booking?.buyer?.username}</p>
-                <p>{booking?.buyer?.email}</p>
-                <p>{booking?.date}</p>
-                <button
-                  onClick={() => {
-                    handleCancel(booking._id);
-                  }}
-                  className="p-2 rounded bg-red-600 text-white hover:opacity-95"
-                >
-                  Cancel
-                </button>
-              </div>
-            );
-          })}
+        {!loading && !error && (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-200">
+              <thead>
+                <tr>
+                  <th className="py-2 px-4 border-b">Package</th>
+                  <th className="py-2 px-4 border-b">Username</th>
+                  <th className="py-2 px-4 border-b">Email</th>
+                  <th className="py-2 px-4 border-b">Date</th>
+                  <th className="py-2 px-4 border-b">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentBookings.map((booking, i) => (
+                  <tr key={i} className="text-center">
+                    <td className="py-2 px-4 border-b">
+                      <Link to={`/package/${booking?.packageDetails?._id}`}>
+                        <div className="flex items-center">
+                          <img
+                            className="w-12 h-12 mr-2"
+                            src={booking?.packageDetails?.packageImages[0]}
+                            alt="Package"
+                          />
+                          <span className="hover:underline">
+                            {booking?.packageDetails?.packageName}
+                          </span>
+                        </div>
+                      </Link>
+                    </td>
+                    <td className="py-2 px-4 border-b">{booking?.buyer?.username}</td>
+                    <td className="py-2 px-4 border-b">{booking?.buyer?.email}</td>
+                    <td className="py-2 px-4 border-b">{booking?.date}</td>
+                    <td className="py-2 px-4 border-b">
+                      <button
+                        onClick={() => handleCancel(booking._id)}
+                        className="p-2 rounded bg-red-600 text-white hover:opacity-95"
+                      >
+                        Cancel
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };
