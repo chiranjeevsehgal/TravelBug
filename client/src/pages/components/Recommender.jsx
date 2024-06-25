@@ -48,14 +48,25 @@ function RecommendationModal({ open, onClose, recommendation, loading }) {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Your Travel Recommendations</DialogTitle>
       <DialogContent>
-        {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <DialogContentText component="div">
+      {loading ? (
+        <div className="flex flex-col items-center justify-center h-64 space-y-4">
+    <div className="relative">
+      <div className="w-24 h-24 border-t-4 border-b-4 border-blue-500 rounded-full animate-spin"></div>
+      <div className="w-24 h-24 border-r-4 border-l-4 border-pink-500 rounded-full animate-spin absolute top-0 left-0 animate-ping"></div>
+    </div>
+    <p className="text-lg font-semibold text-gray-700 animate-pulse">
+      Crafting your perfect adventure...
+    </p>
+    <div className="flex space-x-2">
+      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
+      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+    </div>
+  </div>
+) : (
+  <DialogContentText component="div">
+            <DialogTitle>Your Travel Recommendations</DialogTitle>
             <ul style={{ paddingLeft: '20px', listStyleType: 'none' }}>
               {formatText(recommendation)}
             </ul>
@@ -85,6 +96,20 @@ export default function ScrollDialog() {
 
   const [loading, setLoading] = useState(false);
 
+  const months = [
+    { value: 'jan', label: 'January' },
+    { value: 'feb', label: 'February' },
+    { value: 'mar', label: 'March' },
+    { value: 'apr', label: 'April' },
+    { value: 'may', label: 'May' },
+    { value: 'jun', label: 'June' },
+    { value: 'jul', label: 'July' },
+    { value: 'aug', label: 'August' },
+    { value: 'sep', label: 'September' },
+    { value: 'oct', label: 'October' },
+    { value: 'nov', label: 'November' },
+    { value: 'dec', label: 'December' },
+  ];
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -104,6 +129,11 @@ export default function ScrollDialog() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+
+    if (name === 'travelers' && value < 1) {
+      return; 
+    }
+
     setFormData(prevData => ({
       ...prevData,
       [name]: value
@@ -120,7 +150,6 @@ export default function ScrollDialog() {
     }));
   };
 
- 
   const handleGetRecommendations = async () => {
     const templateString = `We are total ${formData.travelers} people and want to travel in the month of ${formData.month}. Activities interested in: ${formData.activities.join(", ")}, having ${formData.budget} budget, ${formData.preferences}.`;
     console.log(templateString);
@@ -183,7 +212,7 @@ export default function ScrollDialog() {
         onClick={handleClickOpen('paper')}
         color="primary"
         aria-label="edit"
-        className="bottom-4 right-4"
+        className="fixed bottom-4 right-4 z-50"
       >
         <TbMessageChatbot size={24} />
       </Fab>
@@ -194,27 +223,32 @@ export default function ScrollDialog() {
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
+        maxWidth="xs"
+        fullWidth
       >
         <DialogTitle id="scroll-dialog-title">AI Place Recommender</DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
+        <DialogContent dividers={scroll === 'paper'} className="p-4">
           <DialogContentText
             id="scroll-dialog-description"
             ref={descriptionElementRef}
             tabIndex={-1}
+            className="mb-4"
           >
             Please answer the following questions to help us recommend the perfect travel destination for you:
           </DialogContentText>
 
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Month of Travel</InputLabel>
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel shrink htmlFor="month-select">Month of Travel</InputLabel>
             <Select
+              id="month-select"
               name="month"
               value={formData.month}
               onChange={handleInputChange}
+              label="Month of Travel"
             >
-              <MenuItem value="jan">January</MenuItem>
-              <MenuItem value="feb">February</MenuItem>
-              {/* Add other months */}
+              {months.map((month) => (
+                <MenuItem key={month.value} value={month.value}>{month.label}</MenuItem>
+              ))}
             </Select>
           </FormControl>
 
@@ -226,14 +260,18 @@ export default function ScrollDialog() {
             name="travelers"
             value={formData.travelers}
             onChange={handleInputChange}
+            variant="outlined"
+            InputLabelProps={{ shrink: true }}
           />
 
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Budget Range</InputLabel>
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel shrink htmlFor="budget-select">Budget Range</InputLabel>
             <Select
+              id="budget-select"
               name="budget"
               value={formData.budget}
               onChange={handleInputChange}
+              label="Budget Range"
             >
               <MenuItem value="budget">Budget</MenuItem>
               <MenuItem value="midrange">Mid-range</MenuItem>
@@ -241,8 +279,8 @@ export default function ScrollDialog() {
             </Select>
           </FormControl>
 
-          <FormGroup>
-            <DialogContentText style={{ marginTop: '16px', marginBottom: '8px' }}>
+          <FormGroup className="mt-4">
+            <DialogContentText className="mb-2">
               Preferred Activities:
             </DialogContentText>
             {['Beach', 'Hiking', 'Cultural Sites', 'Food Tours', 'Adventure Sports'].map((activity) => (
@@ -263,17 +301,19 @@ export default function ScrollDialog() {
           <TextField
             fullWidth
             margin="normal"
-            label="Any specific preferences or requirements?"
+            label="Any specific preferences?"
             multiline
             rows={4}
             name="preferences"
             value={formData.preferences}
             onChange={handleInputChange}
+            variant="outlined"
+            InputLabelProps={{ shrink: true }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions className="p-4">
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleGetRecommendations}>Get Recommendations</Button>
+          <Button onClick={handleGetRecommendations}>Generate</Button>
         </DialogActions>
       </Dialog>
 
@@ -289,3 +329,4 @@ export default function ScrollDialog() {
     </React.Fragment>
   );
 }
+

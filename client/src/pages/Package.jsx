@@ -26,6 +26,7 @@ import RatingCard from "./RatingCard";
 import Chat from "./user/Chat";
 import "./styles/Chat.css";
 import toast from "react-hot-toast";
+import { ClipLoader } from 'react-spinners';
 
 const Package = () => {
   SwiperCore.use([Navigation]);
@@ -202,10 +203,10 @@ const Package = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-        {loading && (
-          <p className="text-center font-semibold text-lg" id="loading">
-            Loading...
-          </p>
+      {loading && (
+          <div className="flex justify-center items-center">
+            <ClipLoader color="#4A90E2" loading={loading} size={35} />
+          </div>
         )}
         {error && (
           <div className="flex flex-col items-center gap-4 bg-red-100 p-6 rounded-lg">

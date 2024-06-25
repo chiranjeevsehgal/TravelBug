@@ -202,7 +202,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row sm:justify-between align-middle">
+              <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center">
                 {/* <button
                   onClick={handleLogout}
                   className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
@@ -211,7 +211,7 @@ const Profile = () => {
                 </button> */}
                 <Link
                   to="/profile/editprofile"
-                  className="w-full sm:w-auto px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors duration-200 text-center"
+                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-[#41A4FF] text-[#41A4FF] rounded-md hover:bg-[#41A4FF] hover:text-white transition-colors duration-200 text-center"
                 >
                   Edit Profile
                 </Link>

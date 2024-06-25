@@ -154,16 +154,14 @@ const Search = () => {
               <option value="createdAt_asc">Oldest</option>
             </select>
           </div>
-          <button className="bg-slate-700 rounded-lg text-white p-3 uppercase hover:opacity-95">
+          <button className="bg-[#41A4FF] rounded-lg text-white p-3 uppercase hover:opacity-95">
             Search
           </button>
         </form>
       </div>
       {/* ------------------------------------------------------------------------------- */}
       <div className="flex-1">
-        <h1 className="text-xl font-semibold border-b p-3 text-slate-700 mt-5">
-          Package Results:
-        </h1>
+        
         <div className="w-full p-5 flex flex-wrap gap-2">
           {!loading && allPackages.length === 0 && (
             <p className="text-xl text-slate-700">No Packages Found!</p>

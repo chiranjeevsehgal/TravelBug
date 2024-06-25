@@ -55,49 +55,48 @@ const Bookings = () => {
 
  
   return (
-    <div className="flex w-full flex-wrap max-sm:flex-col p-4 bg-gray-100">
-      {currentUser ? (
-        <div className="w-full lg:w-2/3 mx-auto bg-white shadow-lg rounded-lg p-6">
-          <div className="w-full border-b border-gray-300 mb-4">
-            <nav className="w-full border-[#41A4FF] border-b-4 overflow-x-auto navbar mb-4">
-              <div className="w-full flex gap-4">
-                <button
-                  className={
-                    activePanelId === 1
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
-                      : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
-                  }
-                  id="bookings"
-                  onClick={() => setActivePanelId(1)}
-                >
-                  Bookings
-                </button>
-                <button
-                  className={
-                    activePanelId === 2
-                      ? "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-[#41A4FF] text-white"
-                      : "p-3 rounded-t-lg transition-all duration-300 text-nowrap bg-gray-200 hover:bg-gray-300"
-                  }
-                  id="updateProfile"
-                  onClick={() => setActivePanelId(2)}
-                >
-                  History
-                </button>
-              </div>
+    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        {currentUser ? (
+          <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-400 to-blue-300 p-4">
+              <h2 className="text-2xl font-bold text-white">Dashboard</h2>
+            </div>
+            <nav className="flex border-b border-gray-200">
+              <button
+                className={`flex-1 py-4 px-6 text-center font-medium ${
+                  activePanelId === 1
+                    ? "border-b-2 border-blue-500 text-blue-600"
+                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+                onClick={() => setActivePanelId(1)}
+              >
+                Bookings
+              </button>
+              <button
+                className={`flex-1 py-4 px-6 text-center font-medium ${
+                  activePanelId === 2
+                    ? "border-b-2 border-blue-500 text-blue-600"
+                    : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+                onClick={() => setActivePanelId(2)}
+              >
+                History
+              </button>
             </nav>
-            <div className="flex justify-center">
+            <div className="p-6">
               {activePanelId === 1 && <MyBookings />}
               {activePanelId === 2 && <MyHistory />}
             </div>
           </div>
-          <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
-        </div>
-      ) : (
-        <div className="text-red-700 text-xl">Login First</div>
-      )}
+        ) : (
+          <div className="bg-white shadow-xl rounded-lg p-8 text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
+            <p className="text-gray-600">Please log in to view your bookings and history.</p>
+          </div>
+        )}
+      </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

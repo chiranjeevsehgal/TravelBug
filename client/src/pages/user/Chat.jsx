@@ -78,7 +78,7 @@
     };
 
     return (
-      <div className="chat-container">
+      <div className="chat-container fixed md:bottom-4 md:right-4 md:w-96 w-full h-full md:h-auto md:max-h-[600px] bg-white shadow-lg rounded-lg overflow-hidden flex flex-col border border-black">
         <div className="chat-header bg-green-700 text-white flex justify-between items-center p-2 rounded-t-lg">
           <h3 className="font-semibold">Chat</h3>
           <button onClick={onClose} className="chat-close-btn">
@@ -98,55 +98,50 @@
             </svg>
           </button>
         </div>
-        <div className="chat-body">
-          <div className="flex flex-col h-full">
-            <div className="flex-grow p-4 overflow-y-auto">
-              {messages.map((message, index) => (
-                <div key={index} className={`flex ${message.type === 'sent' ? 'justify-end' : ''} mb-4`}>
-                  <div className={`max-w-sm ${message.type === 'sent' ? 'bg-green-700 text-white' : 'bg-gray-200'} p-4 rounded-lg`}>
-                    {message.type === 'received' && message.text instanceof Array
-                      ? message.text.map((line, idx) => <React.Fragment key={idx}>{line}</React.Fragment>)
-                      : message.text
-                    }
-                  </div>
-                </div>
-              ))}
-              {showTypingIndicator && (
-                <div className="flex justify-start mb-4">
-                  <div className="max-w-sm bg-gray-200 p-4 rounded-lg typing-indicator">
-                    <div className="typing-dot"></div>
-                    <div className="typing-dot"></div>
-                    <div className="typing-dot"></div>
-                  </div>
-                </div>
-              )}
+        <div className="chat-body flex-grow overflow-y-auto p-4">
+          {messages.map((message, index) => (
+            <div key={index} className={`flex ${message.type === 'sent' ? 'justify-end' : ''} mb-4`}>
+              <div className={`max-w-[75%] ${message.type === 'sent' ? 'bg-green-700 text-white' : 'bg-gray-200'} p-3 rounded-lg`}>
+                {message.type === 'received' && message.text instanceof Array
+                  ? message.text.map((line, idx) => <React.Fragment key={idx}>{line}</React.Fragment>)
+                  : message.text
+                }
+              </div>
             </div>
-            <div className="p-4 bg-gray-100 rounded-b-lg">
-              <textarea
-                placeholder="Type your message..."
-                style={{ resize: 'none' }} 
-                className="w-full border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-600"
-                value={inputMessage}
-                onChange={handleInputChange}
-                
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit();
-                  }
-                }}
-              />
-              <button
-                className="bg-green-700 text-white px-8 py-2 mt-4 rounded-lg"
-                onClick={handleSubmit}
-              >
-                Send
-              </button>
+          ))}
+          {showTypingIndicator && (
+            <div className="flex justify-start mb-4">
+              <div className="max-w-[75%] bg-gray-200 p-3 rounded-lg typing-indicator">
+                <div className="typing-dot"></div>
+                <div className="typing-dot"></div>
+                <div className="typing-dot"></div>
+              </div>
             </div>
-          </div>
+          )}
+        </div>
+        <div className="p-4 bg-gray-100">
+          <textarea
+            placeholder="Type your message..."
+            className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-600 resize-none"
+            value={inputMessage}
+            onChange={handleInputChange}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
+          />
+          <button
+            className="bg-green-700 text-white px-6 py-2 mt-2 rounded-lg w-full md:w-auto"
+            onClick={handleSubmit}
+          >
+            Send
+          </button>
         </div>
       </div>
     );
   };
-
+  
   export default Chat;
+
