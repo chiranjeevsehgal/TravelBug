@@ -244,7 +244,7 @@ const Package = () => {
               {/* Navigation and share buttons */}
               <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
                 <button
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/packages")}
                   className="bg-white bg-opacity-70 p-2 rounded-full shadow-md hover:bg-opacity-100 transition duration-300"
                 >
                   <FaArrowLeft className="text-slate-600" />
@@ -261,9 +261,10 @@ const Package = () => {
                 </button>
               </div>
               {copied && (
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white px-4 py-2 rounded-full">
-                  Link copied!
-                </div>
+                  <>
+                  {toast.success("Link copied!")}
+                  </>
+                
               )}
             </div>
 

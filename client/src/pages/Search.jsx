@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PackageCard from "./PackageCard";
+import { ClipLoader } from 'react-spinners';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Search = () => {
   const [showMoreBtn, setShowMoreBtn] = useState(false);
   //   console.log(listings);
 
-  
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -39,8 +40,8 @@ const Search = () => {
       try {
         const searchQuery = urlParams.toString();
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-        const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`,{
-          credentials:"include"
+        const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`, {
+          credentials: "include"
         });
         const data = await res.json();
         setLoading(false);
@@ -99,8 +100,8 @@ const Search = () => {
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-    const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`,{
-      credentials:"include"
+    const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`, {
+      credentials: "include"
     });
     const data = await res.json();
     if (data?.packages?.length < 9) {
@@ -161,15 +162,16 @@ const Search = () => {
       </div>
       {/* ------------------------------------------------------------------------------- */}
       <div className="flex-1">
-        
+
         <div className="w-full p-5 flex flex-wrap gap-2">
           {!loading && allPackages.length === 0 && (
             <p className="text-xl text-slate-700">No Packages Found!</p>
           )}
           {loading && (
-            <p className="text-xl text-slate-700 text-center w-full">
-              Loading...
-            </p>
+
+            <div className="flex justify-center items-center w-full">
+              <ClipLoader color="#4A90E2" loading={loading} size={40} />
+            </div>
           )}
           {!loading &&
             allPackages &&
