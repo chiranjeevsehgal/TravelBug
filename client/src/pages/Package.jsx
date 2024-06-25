@@ -353,10 +353,10 @@ const Package = () => {
                   onClick={() => currentUser ? navigate(`/booking/${params?.id}`) : navigate("/login")}
                   className="flex-1 bg-green-600 text-white rounded-lg py-3 font-semibold hover:bg-green-700 transition duration-300"
                 >
-                  Book Now
+                  Book Now  
                 </button>
-                <button
-                  onClick={() => setShowChat(true)}
+                <button  
+                  onClick={() => currentUser ? setShowChat(true):navigate("/login")}
                   className="flex-1 bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition duration-300"
                 >
                   Explore Place
