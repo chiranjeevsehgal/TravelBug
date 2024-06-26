@@ -5,9 +5,6 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  logOutStart,
-  logOutSuccess,
-  logOutFailure,
   deleteUserAccountStart,
   deleteUserAccountSuccess,
   deleteUserAccountFailure,
@@ -19,18 +16,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
-import AllBookings from "./AllBookings";
-import AdminUpdateProfile from "./AdminUpdateProfile";
-import AddPackages from "./AddPackages";
-import "./styles/DashboardStyle.css";
-import AllPackages from "./AllPackages";
-import AllUsers from "./AllUsers";
-import Payments from "./Payments";
-import RatingsReviews from "./RatingsReviews";
-import History from "./History";
-
 import toast, { Toaster } from 'react-hot-toast';
-
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -39,7 +25,6 @@ const AdminDashboard = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [profilePhoto, setProfilePhoto] = useState(undefined);
   const [photoPercentage, setPhotoPercentage] = useState(0);
-  const [activePanelId, setActivePanelId] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -65,7 +50,7 @@ const AdminDashboard = () => {
       dispatch(updateUserStart());
       const storage = getStorage(app);
       const photoname = new Date().getTime() + photo.name.replace(/\s/g, "");
-      const storageRef = ref(storage, `profile-photos/${photoname}`); //profile-photos - folder name in firebase
+      const storageRef = ref(storage, `profile-photos/${photoname}`);
       const uploadTask = uploadBytesResumable(storageRef, photo);
 
       uploadTask.on(
@@ -74,7 +59,6 @@ const AdminDashboard = () => {
           const progress = Math.floor(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
-          //   console.log(progress);
           setPhotoPercentage(progress);
         },
         (error) => {
@@ -87,26 +71,23 @@ const AdminDashboard = () => {
               `${API_BASE_URL}/api/user/update-profile-photo/${currentUser._id}`,
               {
                 method: "POST",
-                credentials:"include",
+                credentials: "include",
                 headers: {
-                  "Content-Type": " application/json",
+                  "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ avatar: downloadUrl }),
               }
             );
             const data = await res.json();
             if (data?.success) {
-              toast.success(data?.message)
+              toast.success(data?.message);
               setFormData({ ...formData, avatar: downloadUrl });
               dispatch(updateUserSuccess(data?.user));
               setProfilePhoto(null);
-              return;
             } else {
               dispatch(updateUserFailure(data?.message));
+              toast.error(data?.message);
             }
-            dispatch(updateUserFailure(data?.message));
-            
-            toast.error(data?.message)
           });
         }
       );
@@ -118,7 +99,7 @@ const AdminDashboard = () => {
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
     const CONFIRM = confirm(
-      "Are you sure ? the account will be permenantly deleted!"
+      "Are you sure? The account will be permanently deleted!"
     );
     if (CONFIRM) {
       try {
@@ -126,34 +107,34 @@ const AdminDashboard = () => {
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
         const res = await fetch(`${API_BASE_URL}/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
-          credentials:"include"
+          credentials: "include"
         });
         const data = await res.json();
         if (data?.success === false) {
           dispatch(deleteUserAccountFailure(data?.message));
-          
-          toast.error("Something went wrong!")
+          toast.error("Something went wrong!");
           return;
         }
         dispatch(deleteUserAccountSuccess());
-        
-        toast.success(data?.message)
-      } catch (error) {}
+        toast.success(data?.message);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         {currentUser ? (
           <div className="bg-white shadow rounded-lg overflow-hidden">
             <div className="px-4 py-5 sm:p-6">
               <div className="flex flex-col items-center">
-                <div className="relative w-40 h-40 mb-4">
+                <div className="relative w-32 h-32 mb-4">
                   <img
                     src={(profilePhoto && URL.createObjectURL(profilePhoto)) || formData.avatar}
                     alt="Profile photo"
-                    className="w-40 h-40 rounded-full object-cover cursor-pointer"
+                    className="w-32 h-32 rounded-full object-cover cursor-pointer"
                     onClick={() => fileRef.current.click()}
                   />
                   <input
@@ -175,7 +156,7 @@ const AdminDashboard = () => {
                 {profilePhoto && (
                   <button
                     onClick={() => handleProfilePhoto(profilePhoto)}
-                    className="mt-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200"
+                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
                   >
                     {loading ? `Uploading...(${photoPercentage}%)` : "Upload"}
                   </button>
@@ -205,25 +186,19 @@ const AdminDashboard = () => {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center">
-                {/* <button
-                  onClick={handleLogout}
-                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
-                >
-                  Log out
-                </button> */}
                 <Link
                   to="/profile/editprofile"
-                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-[#41A4FF] text-[#41A4FF] rounded-md hover:bg-[#41A4FF] hover:text-white transition-colors duration-200"
+                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-[#41A4FF] text-[#41A4FF] rounded-md hover:bg-[#41A4FF] hover:text-white transition-colors duration-200 text-center"
                 >
                   Edit Profile
                 </Link>
 
-              <button
-                onClick={handleDeleteAccount}
-                className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
-              >
-                Delete account
-              </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
+                >
+                  Delete account
+                </button>
               </div>
             </div>
           </div>
@@ -232,7 +207,7 @@ const AdminDashboard = () => {
         )}
       </div>
       
-<Toaster
+      <Toaster
         position="top-center"
         reverseOrder={false}
       />

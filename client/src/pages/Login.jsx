@@ -46,15 +46,13 @@ const Login = () => {
         dispatch(loginSuccess(data?.user));
         
         toast.success("Login Successful")
-        console.log("Cookies after login:", document.cookie);
-
+        
 
         navigate("/");
-        // setTimeout(()=>{
-        // },2000)
+        
       } else {
         dispatch(loginFailure(data?.message));
-        toast.error(data?.message);  // Use toast.error for error messages
+        toast.error(data?.message);  
 
       }
     } catch (error) {
@@ -104,9 +102,9 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full text-center text-white bg-[#41A4FF] hover:bg-[#41A4FF] py-2 rounded-md mb-4"
+                  className="w-full text-center text-white bg-[#41A4FF] hover:bg-[#41A4FF] py-2 rounded-md mb-4 disabled:opacity-50"
                 >
-                  {loading ? "Loading..." : "Sign in"}
+                  {loading ? "Signing in..." : "Sign in"}
                 </button>
                 <button className="flex items-center justify-center w-full border border-gray-300 hover:border-gray-500 py-2 rounded-md">
                   <img className="w-5 mr-2" src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google logo" />

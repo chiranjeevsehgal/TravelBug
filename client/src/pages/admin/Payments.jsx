@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
+import { ClipLoader } from 'react-spinners';
+import debounce from 'lodash.debounce';
 
 const Payments = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -31,11 +33,18 @@ const Payments = () => {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      setError("An error occurred while fetching bookings.");
     }
   };
 
+  const debouncedGetAllBookings = debounce(getAllBookings, 300);
+
   useEffect(() => {
-    getAllBookings();
+    debouncedGetAllBookings();
+    return () => {
+      debouncedGetAllBookings.cancel();
+    };
   }, [search]);
 
   const handleUserDelete = async (bookingId) => {
@@ -68,80 +77,118 @@ const Payments = () => {
   };
 
   return (
-    <div className="w-full flex justify-center bg-white">
-      <div className="w-full max-w-screen-lg shadow-xl rounded-lg p-4">
-        {/* <h1 className="text-2xl text-center mb-4">Payments</h1> */}
-        {loading && <h1 className="text-center text-2xl">Loading...</h1>}
-        {error && <h1 className="text-center text-2xl text-red-600">{error}</h1>}
-        <div className="w-full mb-4">
-          <input
-            className="w-full p-2 rounded-lg border"
-            type="text"
-            placeholder="Search Username or Email"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
-        </div>
-        {!loading && allBookings.length > 0 && (
+    <div className="w-full flex justify-center">
+      <div className="w-full max-w-[95%] shadow-xl rounded-lg p-3 flex flex-col gap-2">
+        {loading && (
+          <div className="flex justify-center items-center">
+            <ClipLoader color="#4A90E2" loading={loading} size={35} />
+          </div>
+        )}
+        {!loading && (
+          <div className="w-full mb-4">
+            <input
+              className="border rounded-lg p-2 mb-2 w-full"
+              type="text"
+              placeholder="Search Username or Email"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        )}
+        {error && <h1 className="text-center text-xl text-red-600">{error}</h1>}
+        {!loading && !error && (
           <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="border p-2">Package Image</th>
-                  <th className="border p-2">Package Name</th>
-                  <th className="border p-2">Username</th>
-                  <th className="border p-2">Email</th>
-                  <th className="border p-2">Date</th>
-                  <th className="border p-2">Total Price</th>
-                  <th className="border p-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allBookings.map((booking, i) => (
-                  <tr key={i} className="bg-white text-center">
-                    <td className="border p-2 flex justify-center items-center">
-                      <Link to={`/package/${booking?.packageDetails?._id}`}>
-                        <img
-                          className="w-16 h-16 rounded-full object-cover"
-                          src={booking?.packageDetails?.packageImages[0]}
-                          alt="Package Image"
-                        />
-                      </Link>
-                    </td>
-                    <td className="border p-2">
-                      <Link to={`/package/${booking?.packageDetails?._id}`}>
-                        {booking?.packageDetails?.packageName}
-                      </Link>
-                    </td>
-                    <td className="border p-2">{booking?.buyer?.username}</td>
-                    <td className="border p-2">{booking?.buyer?.email}</td>
-                    <td className="border p-2">{booking?.date}</td>
-                    <td className="border p-2">Rs. {booking?.totalPrice}</td>
-                    <td className="border p-2">
-                      <button
-                        className="p-2 text-red-500 hover:text-red-700"
-                        onClick={() => handleUserDelete(booking?._id)}
-                        disabled={loading}
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
+            <div className="hidden md:block"> {/* Desktop view */}
+              <table className="min-w-full bg-white border border-gray-200">
+                <thead>
+                  <tr>
+                    <th className="py-2 px-4 border-b">Package</th>
+                    <th className="py-2 px-4 border-b">Email</th>
+                    <th className="py-2 px-4 border-b">Date</th>
+                    <th className="py-2 px-4 border-b">Total Price</th>
+                    <th className="py-2 px-4 border-b">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {allBookings.map((booking, i) => (
+                    <tr key={i} className="text-center">
+                      <td className="py-2 px-4 border-b">
+                        <Link to={`/package/${booking?.packageDetails?._id}`}>
+                          <div className="flex items-center">
+                            <img
+                              className="w-12 h-12 mr-2 rounded-full object-cover"
+                              src={booking?.packageDetails?.packageImages[0]}
+                              alt="Package"
+                            />
+                            <span className="hover:underline">
+                              {booking?.packageDetails?.packageName}
+                            </span>
+                          </div>
+                        </Link>
+                      </td>
+                      <td className="py-2 px-4 border-b">{booking?.buyer?.email}</td>
+                      <td className="py-2 px-4 border-b">{booking?.date}</td>
+                      <td className="py-2 px-4 border-b">Rs. {booking?.totalPrice}</td>
+                      <td className="py-2 px-4 border-b">
+                        <button
+                          onClick={() => handleUserDelete(booking?._id)}
+                          className="p-2 rounded bg-red-600 text-white hover:opacity-95"
+                          disabled={loading}
+                        >
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="md:hidden"> {/* Mobile view */}
+              {allBookings.map((booking, i) => (
+                <div key={i} className="mb-4 border rounded-lg p-4">
+                  <div className="mb-2">
+                    <Link to={`/package/${booking?.packageDetails?._id}`}>
+                      <div className="flex items-center">
+                        <img
+                          className="w-12 h-12 mr-2 rounded-full object-cover"
+                          src={booking?.packageDetails?.packageImages[0]}
+                          alt="Package"
+                        />
+                        <span className="hover:underline font-semibold">
+                          {booking?.packageDetails?.packageName}
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="mb-2 text-sm">
+                    <strong>Username:</strong> {booking?.buyer?.username}
+                  </div>
+                  <div className="mb-2 text-sm">
+                    <strong>Email:</strong> {booking?.buyer?.email}
+                  </div>
+                  <div className="mb-2 text-sm">
+                    <strong>Date:</strong> {booking?.date}
+                  </div>
+                  <div className="mb-2 text-sm">
+                    <strong>Total Price:</strong> Rs. {booking?.totalPrice}
+                  </div>
+                  <button
+                    onClick={() => handleUserDelete(booking?._id)}
+                    className="w-full p-2 rounded bg-red-500 text-white hover:opacity-95 mt-4"
+                    disabled={loading}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
         {!loading && allBookings.length === 0 && (
           <p className="text-center">No payments found.</p>
         )}
       </div>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

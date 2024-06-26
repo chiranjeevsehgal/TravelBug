@@ -22,6 +22,17 @@ const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    signupStart: (state) => {
+      state.loading = true;
+    },
+    signupSuccess: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    signupFailure: (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    },
     updateUserStart: (state) => {
       state.loading = true;
     },
@@ -75,6 +86,9 @@ export const {
   loginStart,
   loginSuccess,
   loginFailure,
+  signupStart,
+  signupSuccess,
+  signupFailure,
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,

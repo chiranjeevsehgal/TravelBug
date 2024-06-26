@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
-
-
+import { ClipLoader } from 'react-spinners';
+import debounce from 'lodash.debounce';
 
 const AllPackages = () => {
   const [packages, setPackages] = useState([]);
@@ -17,15 +17,15 @@ const AllPackages = () => {
     try {
       setLoading(true);
       let url =
-        filter === "offer" //offer
+        filter === "offer"
           ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&offer=true`
-          : filter === "latest" //latest
+          : filter === "latest"
             ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=createdAt`
-            : filter === "top" //top rated
+            : filter === "top"
               ? `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}&sort=packageRating`
-              : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}`; //all
-      const res = await fetch(url,{
-        credentials:"include"
+              : `${API_BASE_URL}/api/package/get-packages?searchTerm=${search}`;
+      const res = await fetch(url, {
+        credentials: "include"
       });
       const data = await res.json();
       if (data?.success) {
@@ -37,11 +37,17 @@ const AllPackages = () => {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
+  const debouncedGetPackages = debounce(getPackages, 300);
+
   useEffect(() => {
-    getPackages();
+    debouncedGetPackages();
+    return () => {
+      debouncedGetPackages.cancel();
+    };
   }, [filter, search]);
 
   const handleDelete = async (packageId) => {
@@ -50,131 +56,109 @@ const AllPackages = () => {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/package/delete-package/${packageId}`, {
         method: "DELETE",
-        credentials:"include"
+        credentials: "include"
       });
       
       const data = await res.json();
       
-      toast.success(data?.message)
+      toast.success(data?.message);
       getPackages();
-      setLoading(false);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to delete package");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="shadow-xl rounded-lg w-full flex flex-col p-3 justify-center gap-2 bg-white">
-        {loading && <h1 className="text-center text-lg">Loading...</h1>}
-        {packages && (
-          <>
-            <div className="flex items-center justify-center">
-              <input
-                className="p-2 w-full rounded-lg border focus:outline-none focus:border-blue-500" type="text"
-                placeholder="Search"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-              />
-            </div>
-            <div className="my-2 border-y-2 py-2">
-              <ul className="w-full flex justify-around">
-                <li
-                  className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300  ${filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                    }`}
-                  id="all"
-                  onClick={(e) => {
-                    setFilter(e.target.id);
-                  }}
-                >
-                  All
-                </li>
-                <li
-                  className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${filter === "offer" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                    }`}
-                  id="offer"
-                  onClick={(e) => {
-                    setFilter(e.target.id);
-                  }}
-                >
-                  Offer
-                </li>
-                <li
-                  className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${filter === "latest" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-
-                    }`}
-                  id="latest"
-                  onClick={(e) => {
-                    setFilter(e.target.id);
-                  }}
-                >
-                  Latest
-                </li>
-                <li
-                  className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${filter === "top" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                    }`}
-                  id="top"
-                  onClick={(e) => {
-                    setFilter(e.target.id);
-                  }}
-                >
-                  Top
-                </li>
-              </ul>
-            </div>
-          </>
-        )}
-        {/* packages */}
-        {packages ? (
-          packages.map((pack, i) => {
-            return (
-              <div
-                className="border rounded-lg w-full flex p-3 justify-between items-center hover:scale-[1.02] transition-all duration-300"
-                key={i}
+    <div className="w-full flex justify-center">
+    <div className="w-full max-w-[95%] shadow-xl rounded-lg p-3 flex flex-col gap-2 bg-white">
+      {loading && (
+        <div className="flex justify-center items-center">
+          <ClipLoader color="#4A90E2" loading={loading} size={35} />
+        </div>
+      )}
+      {!loading && (
+        <>
+          <div className="w-full mb-4">
+            <input
+              className="border rounded-lg p-2 mb-2 w-full"
+              type="text"
+              placeholder="Search packages"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 my-2 py-2 border-y-2">
+            {["all", "offer", "latest", "top"].map((option) => (
+              <button
+                key={option}
+                className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${
+                  filter === option ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                }`}
+                onClick={() => setFilter(option)}
               >
-                <Link to={`/package/${pack._id}`}>
-                  <img
-                    src={pack?.packageImages[0]}
-                    alt="image"
-                    className="w-20 h-20 rounded"
-                  />
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="overflow-x-auto">
+        <div className="hidden md:block"> {/* Desktop view */}
+            {packages.map((pack, i) => (
+              <div key={i} className="border rounded-lg p-3 mb-2 flex justify-between items-center hover:bg-gray-50 transition-all duration-300">
+                <Link to={`/package/${pack._id}`} className="flex items-center">
+                  <img src={pack?.packageImages[0]} alt="Package" className="w-20 h-20  mr-4 object-cover  rounded-full" />
+                  <span className="font-semibold hover:underline">{pack?.packageName}</span>
                 </Link>
-                <Link to={`/package/${pack._id}`}>
-                  <p className="font-semibold hover:underline">
-                    {pack?.packageName}
-                  </p>
-                </Link>
-                <div className="flex flex-col">
+                <div className="flex gap-2">
                   <Link to={`/profile/admin/update-package/${pack._id}`}>
-                    <button
-                      disabled={loading}
-                      className="text-blue-600 hover:underline"
-                    >
-                      {loading ? "Loading..." : "Edit"}
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+                      Edit
                     </button>
                   </Link>
                   <button
-                    disabled={loading}
                     onClick={() => handleDelete(pack?._id)}
-                    className="text-red-600 hover:underline"
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
                   >
-                    {loading ? "Loading..." : "Delete"}
+                    Delete
                   </button>
                 </div>
               </div>
-            );
-          })
-        ) : (
-          <h1 className="text-center text-2xl">No Packages Yet!</h1>
+            ))}
+          </div>
+          <div className="md:hidden"> {/* Mobile view */}
+            {packages.map((pack, i) => (
+              <div key={i} className="border rounded-lg p-3 mb-2 hover:bg-gray-50 transition-all duration-300">
+                <Link to={`/package/${pack._id}`} className="flex items-center mb-2">
+                  <img src={pack?.packageImages[0]} alt="Package" className="w-16 h-16  mr-3 object-cover  rounded-full" />
+                  <span className="font-semibold hover:underline">{pack?.packageName}</span>
+                </Link>
+                <div className="flex justify-end gap-2 mt-2">
+                  <Link to={`/profile/admin/update-package/${pack._id}`}>
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                      Edit
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(pack?._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {!loading && packages.length === 0 && (
+          <p className="text-center">No packages found.</p>
         )}
-        <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
       </div>
-    </>
+      <Toaster position="top-center" reverseOrder={false} />
+    </div>
   );
 };
 

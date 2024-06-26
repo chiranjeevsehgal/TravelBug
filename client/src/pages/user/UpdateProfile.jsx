@@ -28,11 +28,14 @@ const UpdateProfile = () => {
   const [updatePassword, setUpdatePassword] = useState({
     oldpassword: "",
     newpassword: "",
+    confirmpassword: "",
   });
   const [formErrors, setFormErrors] = useState({
     username: false,
     email: false,
     phone: false,
+    newpassword: false,
+    confirmpassword: false,
   });
 
   useEffect(() => {
@@ -81,11 +84,28 @@ const UpdateProfile = () => {
     }
   };
 
-    const handlePass = (e) => {
+  const handlePass = (e) => {
+    const { id, value } = e.target;
     setUpdatePassword({
       ...updatePassword,
-      [e.target.id]: e.target.value,
+      [id]: value,
     });
+
+    // Validate new password
+    if (id === "newpassword") {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        newpassword: value.length < 6,
+      }));
+    }
+
+    // Validate confirm password
+    if (id === "confirmpassword") {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmpassword: value !== updatePassword.newpassword,
+      }));
+    }
   };
 
   const updateUserDetails = async (e) => {
@@ -148,12 +168,20 @@ const UpdateProfile = () => {
     e.preventDefault();
 
     // Check for password validation
-    if (updatePassword.oldpassword === "" || updatePassword.newpassword === "") {
-      toast.error("Enter a valid password.");
+    if (updatePassword.oldpassword === "" || updatePassword.newpassword === "" || updatePassword.confirmpassword === "") {
+      toast.error("All password fields are required.");
       return;
     }
     if (updatePassword.oldpassword === updatePassword.newpassword) {
       toast.error("New password can't be same as old.");
+      return;
+    }
+    if (updatePassword.newpassword !== updatePassword.confirmpassword) {
+      toast.error("New password and confirm password do not match.");
+      return;
+    }
+    if (updatePassword.newpassword.length < 6) {
+      toast.error("New password must be at least 6 characters long.");
       return;
     }
 
@@ -170,27 +198,29 @@ const UpdateProfile = () => {
       });
       const data = await res.json();
 
-      if (data.success === false && res.status !== 201 && res.status !== 200) {
-        dispatch(updatePassFailure(data?.message));
-        toast.error("Session Ended! Please login again.");
-        navigate("/login");
-        return;
+      if (data.success === false) {
+        if (res.status !== 201 && res.status !== 200) {
+          dispatch(updatePassFailure(data?.message));
+          toast.error("Session Ended! Please login again.");
+          navigate("/login");
+        } else {
+          dispatch(updatePassFailure(data?.message));
+          toast.error(data?.message);
+        }
+      } else {
+        dispatch(updatePassSuccess());
+        toast.success(data?.message);
+        setUpdatePassword({
+          oldpassword: "",
+          newpassword: "",
+          confirmpassword: "",
+        });
+        navigate(`/profile/${currentUser.user_role === 1 ? "admin" : "user"}`);
       }
-
-      dispatch(updatePassSuccess());
-      toast(data?.message, {
-        icon: <CiCircleInfo />,
-      });
-
-      setUpdatePassword({
-        oldpassword: "",
-        newpassword: "",
-      });
-
-      navigate("/profile/user");
-      return;
     } catch (error) {
       console.log(error);
+      dispatch(updatePassFailure("An error occurred while updating the password."));
+      toast.error("An error occurred while updating the password.");
     }
   };
 
@@ -199,6 +229,7 @@ const UpdateProfile = () => {
       <div className="w-full max-w-md">
         {updateProfileDetailsPanel ? (
           <div className="flex flex-col bg-white shadow-md rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Update Details</h2>
             <div className="flex flex-col mb-4 w-full">
               <label htmlFor="username" className="font-semibold mb-1">Username:</label>
               <input
@@ -267,8 +298,8 @@ const UpdateProfile = () => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-6">
-            <h1 className="text-xl text-start font-semibold mb-4">Change Password</h1>
+          <div className="flex flex-col bg-white shadow-md rounded-lg p-6">
+            <h1 className="text-xl font-semibold mb-4">Change Password</h1>
             <div className="flex flex-col mb-4 w-full">
               <label htmlFor="oldpassword" className="font-semibold mb-1">Enter old password:</label>
               <input
@@ -284,18 +315,34 @@ const UpdateProfile = () => {
               <input
                 type="password"
                 id="newpassword"
-                className="p-2 rounded border border-gray-300"
+                className={`p-2 rounded border ${formErrors.newpassword ? "border-red-500" : "border-gray-300"}`}
                 value={updatePassword.newpassword}
                 onChange={handlePass}
               />
+              {formErrors.newpassword && (
+                <span className="text-red-500 text-sm">Password must be at least 6 characters long.</span>
+              )}
+            </div>
+            <div className="flex flex-col mb-4 w-full">
+              <label htmlFor="confirmpassword" className="font-semibold mb-1">Confirm new password:</label>
+              <input
+                type="password"
+                id="confirmpassword"
+                className={`p-2 rounded border ${formErrors.confirmpassword ? "border-red-500" : "border-gray-300"}`}
+                value={updatePassword.confirmpassword}
+                onChange={handlePass}
+              />
+              {formErrors.confirmpassword && (
+                <span className="text-red-500 text-sm">Passwords do not match.</span>
+              )}
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full">
               <button
                 disabled={loading}
                 onClick={updateUserPassword}
-                className="w-full sm:w-1/2 p-2 border border-[#41A4FF] text-[#41A4FF] rounded hover:bg-[#41A4FF] hover:text-white "
+                className="w-full sm:w-1/2 p-2 border border-[#41A4FF] text-[#41A4FF] rounded hover:bg-[#41A4FF] hover:text-white"
               >
-                {loading ? "Loading..." : "Update Password"}
+                {loading ? "Updating..." : "Update Password"}
               </button>
               <button
                 disabled={loading}
@@ -304,12 +351,13 @@ const UpdateProfile = () => {
                   setUpdatePassword({
                     oldpassword: "",
                     newpassword: "",
+                    confirmpassword: "",
                   });
                 }}
                 type="button"
                 className="w-full sm:w-1/2 p-2 rounded border border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
               >
-                {loading ? "Loading..." : "Back"}
+                {loading ? "Please wait..." : "Back"}
               </button>
             </div>
           </div>
