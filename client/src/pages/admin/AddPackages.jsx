@@ -158,7 +158,7 @@ const AddPackages = () => {
       setError(false);
       
       toast(data?.message, {
-        icon: <CiCircleInfo />,
+        icon: "ℹ️",
       });
       
       setFormData({

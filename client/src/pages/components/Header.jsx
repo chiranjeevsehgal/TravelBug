@@ -11,6 +11,7 @@ import {
   logOutStart,
   logOutSuccess,
   logOutFailure,
+  clearOTP,
 } from "../../redux/user/userSlice";
 
 const Header = () => {
@@ -24,6 +25,7 @@ const Header = () => {
 
   const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -47,6 +49,7 @@ const Header = () => {
       }
       dispatch(logOutSuccess());
       setIsDropdownOpen(false)
+      dispatch(clearOTP());
       toast.success(data?.message)
       navigate("/login");
     } catch (error) {

@@ -162,33 +162,36 @@ const Search = () => {
       </div>
       {/* ------------------------------------------------------------------------------- */}
       <div className="flex-1">
-
-        <div className="w-full p-5 flex flex-wrap gap-2">
-          {!loading && allPackages.length === 0 && (
-            <p className="text-xl text-slate-700">No Packages Found!</p>
-          )}
-          {loading && (
-
-            <div className="flex justify-center items-center w-full">
-              <ClipLoader color="#4A90E2" loading={loading} size={40} />
-            </div>
-          )}
-          {!loading &&
-            allPackages &&
-            allPackages.map((packageData, i) => (
-              <PackageCard key={i} packageData={packageData} />
-            ))}
-        </div>
-        {showMoreBtn && (
-          <button
-            onClick={onShowMoreSClick}
-            className="text-sm bg-green-700 text-white hover:underline p-2 m-3 rounded text-center w-max"
-          >
-            Show More
-          </button>
-        )}
+  <div className="w-full p-5">
+    {!loading && allPackages.length === 0 && (
+      <p className="text-xl text-slate-700">No Packages Found!</p>
+    )}
+    {loading && (
+      <div className="flex justify-center items-center w-full">
+        <ClipLoader color="#4A90E2" loading={loading} size={40} />
       </div>
+    )}
+    <div className="w-full flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4">
+      {!loading &&
+        allPackages &&
+        allPackages.map((packageData, i) => (
+          <PackageCard key={i} packageData={packageData} />
+        ))}
     </div>
+  </div>
+  {showMoreBtn && (
+    <div className="flex justify-center sm:justify-start mt-4 mb-8 px-5">
+      <button
+        onClick={onShowMoreSClick}
+        className="text-sm bg-green-700 text-white hover:underline p-2 rounded"
+      >
+        Show More
+      </button>
+    </div>
+  )}
+</div>
+      </div>
+    
   );
 };
 

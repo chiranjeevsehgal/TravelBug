@@ -4,6 +4,7 @@ import {
   loginStart,
   loginSuccess,
   loginFailure,
+  setGENOTP
 } from "../redux/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
@@ -16,6 +17,9 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const [generatedOTP, setGeneratedOTP] = useState();
+
 
   const handleChange = (e) => {
     setFormData({
@@ -46,9 +50,13 @@ const Login = () => {
         dispatch(loginSuccess(data?.user));
         
         toast.success("Login Successful")
-        
-
-        navigate("/");
+        if (!data?.user?.isVerified){
+          await generateAndUpdateOTP(data?.user._id);
+          navigate("/verifyuser");
+        }
+        else{
+          navigate("/");
+        }
         
       } else {
         dispatch(loginFailure(data?.message));
@@ -60,6 +68,165 @@ const Login = () => {
       console.log(error);
     }
   };
+
+  const generateAndUpdateOTP = async (userId) => {
+    const sixDigitCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+    
+    dispatch(setGENOTP(sixDigitCode));
+    try {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/user/update-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ userId, otp: sixDigitCode, expiresAt: expiresAt.toISOString() }),
+      });
+      console.log(JSON.stringify({ userId, otp: sixDigitCode, expiresAt }));
+      console.log({ userId, otp: sixDigitCode, expiresAt });
+      const data = await res.json();
+      if (data.success) {
+        await navigations(sixDigitCode);
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error("Error updating OTP:", error);
+      toast.error("Failed to generate OTP. Please try again.");
+    }
+  };
+
+  const sendOTP = async (to, subject, html) => {
+    try {
+      // const to = "chiranjeevsehgal@gmail.com"
+      // const subject = "Registering"
+      // const html = "Welcome to travelbugg!"
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/send-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ to, subject, html }),
+
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      const data = await response.json();
+      console.log("Email sent successfully.");
+    } catch (error) {
+      console.log(error);
+      console.error("Error sending email:", error);
+
+      return;
+    }
+  };
+
+  async function navigations(sixDigitCode) {
+
+    // const sixDigitCode = Math.floor(
+    //   100000 + Math.random() * 900000
+    // ).toString();
+
+    // setGeneratedOTP(sixDigitCode)
+    
+
+
+    const email = formData.email
+    const name = formData.email
+    const emailTemplate = `
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Verification Code | OnClique</title>
+            <style>
+              body, html {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+              }
+
+              .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+              }
+
+              .heading {
+                font-size: 24px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+              }
+
+              .text {
+                font-size: 16px;
+                color: #555;
+                line-height: 1.5;
+                margin-bottom: 20px;
+              }
+
+              .textFooter {
+                font-size: 13px;
+                color: #555;
+                line-height: 1;
+                margin-bottom: 7px;
+              }
+
+              .code {
+                font-size: 20px;
+                font-weight: bold;
+                color: #333;
+                background-color: #f0f0f0;
+                padding: 10px;
+                border-radius: 4px;
+                display: inline-block;
+                margin-bottom: 20px;
+              }
+
+              .footer {
+                font-size: 14px;
+                color: #777;
+                margin-top: 20px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1 class="heading">Hello ${name},</h1>
+              <p class="text">
+                Thank you for registering on TravelBug! Please use the verification code below to complete your registration. If you did not request this code, please ignore this email.
+              </p>
+              <center><div class="code">${sixDigitCode}</div></center>
+              <p class="text">
+                If you have any questions or need assistance, please revert to this email.
+              </p>
+              <div class="footer">
+                <p class="textFooter">Regards,</p>
+                <strong><p class="textFooter">Chiranjeev Sehgal</p></strong>
+              </div>
+            </div>
+          </body>
+        </html>
+        `;
+
+    sendOTP(email, "Verification Code | TravelBug", emailTemplate);
+    dispatch(setGENOTP(sixDigitCode)); // Dispatch the generated OTP
+
+  }
 
   return (
     <div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-gray-100 py-10">

@@ -74,8 +74,8 @@ const Package = () => {
     try {
       setLoading(true);
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/package/get-package-data/${params?.id}`,{
-        credentials:"include"
+      const res = await fetch(`${API_BASE_URL}/api/package/get-package-data/${params?.id}`, {
+        credentials: "include"
       });
       const data = await res.json();
       if (data?.success) {
@@ -111,7 +111,7 @@ const Package = () => {
     if (ratingGiven) {
       // alert("You already submittd your rating!");
       toast('You already submitted your rating!', {
-        icon: <CiCircleInfo />,
+        icon: "ℹ️",
       });
       return;
     }
@@ -137,7 +137,7 @@ const Package = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify(ratingsData),
       });
       const data = await res.json();
@@ -161,8 +161,8 @@ const Package = () => {
   const getRatings = async () => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-      const res = await fetch(`${API_BASE_URL}/api/rating/get-ratings/${params.id}/4`,{
-        credentials:"include"
+      const res = await fetch(`${API_BASE_URL}/api/rating/get-ratings/${params.id}/4`, {
+        credentials: "include"
       });
       const data = await res.json();
       if (data) {
@@ -179,9 +179,9 @@ const Package = () => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`,{
-          credentials:"include"
-        }
+        `${API_BASE_URL}/api/rating/rating-given/${currentUser?._id}/${params?.id}`, {
+        credentials: "include"
+      }
       );
       const data = await res.json();
       setRatingGiven(data?.given);
@@ -200,10 +200,21 @@ const Package = () => {
     }
   }, [params.id, currentUser]);
 
+  const handleExploreClick = () => {
+    if (currentUser) {
+      setShowChat(true);
+    } else {
+      toast("Please sign in to use this feature", {
+        icon: "ℹ️",
+      });
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-      {loading && (
+        {loading && (
           <div className="flex justify-center items-center">
             <ClipLoader color="#4A90E2" loading={loading} size={35} />
           </div>
@@ -219,13 +230,13 @@ const Package = () => {
             </Link>
           </div>
         )}
-        
+
         {packageData && !loading && !error && (
           <div className="bg-white shadow-xl rounded-lg overflow-hidden">
             {/* Header */}
             <div className="relative">
-              <Swiper 
-                navigation 
+              <Swiper
+                navigation
                 className="aspect-[16/9] w-full"
               >
                 {packageData?.packageImages.map((imageUrl, i) => (
@@ -261,10 +272,10 @@ const Package = () => {
                 </button>
               </div>
               {copied && (
-                  <>
+                <>
                   {toast.success("Link copied!")}
-                  </>
-                
+                </>
+
               )}
             </div>
 
@@ -278,7 +289,7 @@ const Package = () => {
                   {packageData?.packageDestination}
                 </p>
               </div>
-            
+
               {/* Price and Duration */}
               <div className="flex flex-col sm:flex-row justify-between items-center bg-gray-100 p-4 rounded-lg gap-4 sm:gap-0">
                 <div className="text-xl sm:text-2xl font-semibold text-center sm:text-left">
@@ -353,10 +364,11 @@ const Package = () => {
                   onClick={() => currentUser ? navigate(`/booking/${params?.id}`) : navigate("/login")}
                   className="flex-1 bg-green-600 text-white rounded-lg py-3 font-semibold hover:bg-green-700 transition duration-300"
                 >
-                  Book Now  
+                  Book Now
                 </button>
-                <button  
-                  onClick={() => currentUser ? setShowChat(true):navigate("/login")}
+                <button
+                  // onClick={() => currentUser ? setShowChat(true):navigate("/login")}
+                  onClick={handleExploreClick}
                   className="flex-1 bg-blue-600 text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition duration-300"
                 >
                   Explore Place

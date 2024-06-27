@@ -225,7 +225,8 @@ const Profile = () => {
               </div>
             </div>
           </div>
-        ) : (
+        ) : 
+        (
           <div className="text-center text-red-600 text-xl">Please log in to view your profile.</div>
         )}
       </div>

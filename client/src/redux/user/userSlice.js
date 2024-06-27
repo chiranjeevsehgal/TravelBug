@@ -4,6 +4,7 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
+  otpgen: null,
 };
 
 const userSlice = createSlice({
@@ -79,6 +80,12 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setGENOTP: (state, action) => { 
+      state.otpgen = action.payload;
+    },
+    clearOTP: (state) => {
+      state.otpgen = null;
+    }
   },
 });
 
@@ -101,6 +108,8 @@ export const {
   deleteUserAccountStart,
   deleteUserAccountSuccess,
   deleteUserAccountFailure,
+  setGENOTP,
+  clearOTP
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -156,7 +156,7 @@ const UpdateProfile = () => {
       }
 
       toast(data?.message, {
-        icon: <CiCircleInfo />,
+        icon: "ℹ️",
       });
       return;
     } catch (error) {

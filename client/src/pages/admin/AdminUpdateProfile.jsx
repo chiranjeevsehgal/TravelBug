@@ -90,7 +90,7 @@ const AdminUpdateProfile = () => {
         return;
       }
       toast(data?.message, {
-        icon: <CiCircleInfo />,
+        icon: "ℹ️",
       });
       
       return;
@@ -135,7 +135,7 @@ const AdminUpdateProfile = () => {
       dispatch(updatePassSuccess());
       
       toast(data?.message, {
-        icon: <CiCircleInfo />,
+        icon: "ℹ️",
       });
       
       setUpdatePassword({
