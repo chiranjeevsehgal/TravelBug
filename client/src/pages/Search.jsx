@@ -180,15 +180,15 @@ const Search = () => {
     </div>
   </div>
   {showMoreBtn && (
-    <div className="flex justify-center sm:justify-start mt-4 mb-8 px-5">
-      <button
-        onClick={onShowMoreSClick}
-        className="text-sm bg-green-700 text-white hover:underline p-2 rounded"
-      >
-        Show More
-      </button>
-    </div>
-  )}
+  <div className="flex justify-center mt-8 mb-12">
+    <button
+      onClick={onShowMoreSClick}
+      className="bg-[#41A4FF] text-white py-3 px-6 rounded-lg hover:bg-[#3B93E6] transition duration-300 ease-in-out shadow-md"
+    >
+      Show More
+    </button>
+  </div>
+)}
 </div>
       </div>
     

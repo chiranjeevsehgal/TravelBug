@@ -83,17 +83,15 @@ const RatingsReviews = () => {
             />
             <div className="flex justify-center gap-4 my-2 py-2 border-y-2">
               <button
-                className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${
-                  filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                  }`}
                 onClick={() => setFilter("all")}
               >
                 All
               </button>
               <button
-                className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${
-                  filter === "most" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className={`cursor-pointer hover:scale-95 border rounded-xl p-2 px-12 transition-all duration-300 ${filter === "most" ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                  }`}
                 onClick={() => setFilter("most")}
               >
                 Most Rated
@@ -135,12 +133,14 @@ const RatingsReviews = () => {
           <p className="text-center">No packages found.</p>
         )}
         {showMoreBtn && (
-          <button
-            onClick={onShowMoreClick}
-            className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded text-center w-full mt-4"
-          >
-            Show More
-          </button>
+          <div className="flex justify-center mt-6 mb-4">
+            <button
+              onClick={onShowMoreClick}
+              className="bg-[#41A4FF] text-white hover:bg-[#41A4FF] transition-colors duration-300 py-3 px-10 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+            >
+              Show More
+            </button>
+          </div>
         )}
       </div>
       <Toaster position="top-center" reverseOrder={false} />

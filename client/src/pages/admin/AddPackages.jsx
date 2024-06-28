@@ -229,6 +229,7 @@ const AddPackages = () => {
                 id="packageDays"
                 value={formData.packageDays}
                 onChange={handleChange}
+                min={1}
               />
             </div>
             <div className="flex flex-col flex-1">
@@ -239,6 +240,7 @@ const AddPackages = () => {
                 id="packageNights"
                 value={formData.packageNights}
                 onChange={handleChange}
+                min={1}
               />
             </div>
           </div>
@@ -262,7 +264,8 @@ const AddPackages = () => {
               <option>Select</option>
               <option>Flight</option>
               <option>Train</option>
-              <option>Boat</option>
+              <option>Bus</option>
+              <option>Car</option>
               <option>Other</option>
             </select>
           </div>
@@ -333,7 +336,7 @@ const AddPackages = () => {
           <button
             hidden={images.length === 0}
             disabled={uploading || loading}
-            className="bg-red-500 p-3 rounded text-white hover:opacity-90 disabled:opacity-50 w-full mb-3"
+            className="bg-[#41A4FF] p-3 rounded text-white hover:opacity-90 disabled:opacity-50 w-full mb-3"
             type="button"
             onClick={handleImageSubmit}
           >
@@ -341,7 +344,7 @@ const AddPackages = () => {
           </button>
           <button
             disabled={uploading || loading || formData.packageImages.length === 0}
-            className="bg-red-500 p-3 rounded text-white hover:opacity-90 disabled:opacity-50 w-full mb-3"
+            className="bg-[#41A4FF] p-3 rounded text-white hover:opacity-90 disabled:opacity-50 w-full mb-3"
           >
             {uploading ? "Uploading..." : loading ? "Loading..." : "Add Package"}
           </button>

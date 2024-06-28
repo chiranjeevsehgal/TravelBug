@@ -13,18 +13,28 @@ const Payments = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
 
+  const [showMoreBtn, setShowMoreBtn] = useState(false);
+
+
   const getAllBookings = async () => {
     try {
       setLoading(true);
+      setShowMoreBtn(false);
+
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`,{
-          credentials:"include"
-        }
+        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`, {
+        credentials: "include"
+      }
       );
       const data = await res.json();
       if (data?.success) {
         setAllBookings(data?.bookings);
+        if (data?.packages?.length > 8) {
+          setShowMoreBtn(true);
+        } else {
+          setShowMoreBtn(false);
+        }
         setLoading(false);
         setError(false);
       } else {
@@ -55,11 +65,11 @@ const Payments = () => {
       try {
         setLoading(true);
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-        const res = await fetch(`${API_BASE_URL}/api/booking/delete-booking/${bookingId}`, {
+        const res = await fetch(`${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`, {
           method: "DELETE",
-          credentials:"include"
+          credentials: "include"
         });
-        
+
         const data = await res.json();
         if (data?.success) {
           toast.success(data?.message)
@@ -74,6 +84,23 @@ const Payments = () => {
         toast.error("Something went wrong!")
       }
     }
+  };
+
+  const onShowMoreSClick = async () => {
+    const numberOfPackages = allPackages.length;
+    const startIndex = numberOfPackages;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+    const res = await fetch(`${API_BASE_URL}/api/package/get-packages?${searchQuery}`, {
+      credentials: "include"
+    });
+    const data = await res.json();
+    if (data?.packages?.length < 9) {
+      setShowMoreBtn(false);
+    }
+    setAllBookings([...allBookings, ...data?.packages]);
   };
 
   return (
@@ -182,6 +209,16 @@ const Payments = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+        {showMoreBtn && (
+          <div className="flex justify-center mt-8 mb-12">
+            <button
+              onClick={onShowMoreSClick}
+              className="bg-[#41A4FF] text-white py-3 px-6 rounded-lg hover:bg-[#3B93E6] transition duration-300 ease-in-out shadow-md"
+            >
+              Show More
+            </button>
           </div>
         )}
         {!loading && allBookings.length === 0 && (

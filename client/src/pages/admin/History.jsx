@@ -13,18 +13,27 @@ const History = () => {
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
 
+  const [showMoreBtn, setShowMoreBtn] = useState(false);
+
   const getAllBookings = async () => {
     try {
       setLoading(true);
+      setShowMoreBtn(false);
+
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
       const res = await fetch(
-        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`,{
-          credentials:"include"
-        }
+        `${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`, {
+        credentials: "include"
+      }
       );
       const data = await res.json();
       if (data?.success) {
         setAllBookings(data?.bookings);
+        if (data?.packages?.length > 8) {
+          setShowMoreBtn(true);
+        } else {
+          setShowMoreBtn(false);
+        }
         setLoading(false);
         setError(false);
       } else {
@@ -55,7 +64,7 @@ const History = () => {
         `${API_BASE_URL}/api/booking/delete-booking-history/${id}/${currentUser._id}`,
         {
           method: "DELETE",
-          credentials:"include"
+          credentials: "include"
         }
       );
       const data = await res.json();
@@ -73,6 +82,25 @@ const History = () => {
       toast.error("An error occurred while deleting the booking.");
     }
   };
+
+
+  const onShowMoreSClick = async () => {
+    const numberOfPackages = allPackages.length;
+    const startIndex = numberOfPackages;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+    const res = await fetch(`${API_BASE_URL}/api/package/get-allBookings?searchTerm=${search}`, {
+      credentials: "include"
+    });
+    const data = await res.json();
+    if (data?.packages?.length < 9) {
+      setShowMoreBtn(false);
+    }
+    setAllBookings([...allBookings, ...data?.packages]);
+  };
+
 
   return (
     <div className="w-full flex justify-center">
@@ -130,13 +158,13 @@ const History = () => {
                       <td className="py-2 px-4 border-b">
                         {(new Date(booking?.date).getTime() < new Date().getTime() ||
                           booking?.status === "Cancelled") && (
-                          <button
-                            onClick={() => handleHistoryDelete(booking._id)}
-                            className="p-2 rounded bg-red-600 text-white hover:opacity-95"
-                          >
-                            <FaTrash />
-                          </button>
-                        )}
+                            <button
+                              onClick={() => handleHistoryDelete(booking._id)}
+                              className="p-2 rounded bg-red-600 text-white hover:opacity-95"
+                            >
+                              <FaTrash />
+                            </button>
+                          )}
                       </td>
                     </tr>
                   ))}
@@ -171,13 +199,13 @@ const History = () => {
                   </div>
                   {(new Date(booking?.date).getTime() < new Date().getTime() ||
                     booking?.status === "Cancelled") && (
-                    <button
-                      onClick={() => handleHistoryDelete(booking._id)}
-                      className="w-full p-2 rounded bg-red-500 text-white hover:opacity-95 mt-4"
-                    >
-                      Delete
-                    </button>
-                  )}
+                      <button
+                        onClick={() => handleHistoryDelete(booking._id)}
+                        className="w-full p-2 rounded bg-red-500 text-white hover:opacity-95 mt-4"
+                      >
+                        Delete
+                      </button>
+                    )}
                 </div>
               ))}
             </div>
@@ -185,6 +213,16 @@ const History = () => {
         )}
         {!loading && allBookings.length === 0 && (
           <p className="text-center">No history found.</p>
+        )}
+        {showMoreBtn && (
+          <div className="flex justify-center mt-8 mb-12">
+            <button
+              onClick={onShowMoreSClick}
+              className="bg-[#41A4FF] text-white py-3 px-6 rounded-lg hover:bg-[#3B93E6] transition duration-300 ease-in-out shadow-md"
+            >
+              Show More
+            </button>
+          </div>
         )}
       </div>
       <Toaster position="top-center" reverseOrder={false} />
