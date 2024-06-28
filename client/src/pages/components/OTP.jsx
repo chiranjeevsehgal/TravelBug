@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import { useDispatch, useSelector } from "react-redux";
 import { clearOTP, updateUserSuccess, setGENOTP } from "../../redux/user/userSlice";
+
+import toast, { Toaster } from 'react-hot-toast';
 
 const VerifyUser = () => {
   const dispatch = useDispatch()
@@ -68,7 +68,10 @@ const VerifyUser = () => {
       if (data.success) {
         dispatch(setGENOTP(newOTP));
         navigations(newOTP)
-        toast.info("A new OTP has been sent to your email");
+        
+        toast("A new OTP has been sent to your email.", {
+          icon: "ℹ️",
+        });
         
       } else {
         throw new Error(data.message);
@@ -224,15 +227,18 @@ const VerifyUser = () => {
 
   useEffect(() => {
     if (showToast && isDisabled) {
-      toast.info("Enter the OTP sent to your Email.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
+      // toast.info("Enter the OTP sent to your Email.", {
+      //   position: "top-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "dark",
+      // });
+      toast("Enter the OTP sent to your Email", {
+        icon: "ℹ️",
       });
       setShowToast(false);
     }
@@ -323,7 +329,11 @@ const VerifyUser = () => {
             </button>
           </p>
         </div>
-        <ToastContainer />
+        
+        <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       </div>
     );
 };

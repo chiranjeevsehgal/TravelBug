@@ -76,7 +76,7 @@ const Signup = () => {
 
               <div className="mb-4">
                 <label className="block text-sm font-semibold mb-1" htmlFor="password">Password</label>
-                <input type="password" id="password" placeholder="*****" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} />
+                <input type="password" id="password" placeholder="Enter your password" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} />
               </div>
 
               {/* <div className="mb-4">
@@ -84,7 +84,7 @@ const Signup = () => {
                 <textarea id="address" placeholder="Enter your address" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} />
               </div> */}
 
-              <div className="mb-4">
+              <div className="mb-8">
                 <label className="block text-sm font-semibold mb-1" htmlFor="phone">Phone</label>
                 <input type="tel" id="phone" placeholder="Enter your phone number" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} pattern="[0-9]{10}" title="Phone number should be of 10 digits"/>
               </div>
@@ -102,7 +102,7 @@ const Signup = () => {
               </button> */}
             </form>
             {/* {error && <p className="text-sm text-center text-red-600 mt-3">{error}</p>} */}
-            <div className="text-center mt-6">
+            <div className="text-center mt-2">
               <span className="text-sm text-gray-500">Already have an account?</span>
               <Link to="/login" className="text-sm font-semibold text-[#41A4FF] ml-1">Sign in</Link>
             </div>

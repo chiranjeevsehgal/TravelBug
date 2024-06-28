@@ -254,7 +254,7 @@ const Login = () => {
                 <input
                   type="password"
                   id="password"
-                  placeholder="*****"
+                  placeholder="Enter your password"
                   className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700"
                   onChange={handleChange}
                   required
@@ -273,19 +273,19 @@ const Login = () => {
                 >
                   {loading ? "Signing in..." : "Sign in"}
                 </button>
-                <button className="flex items-center justify-center w-full border border-gray-300 hover:border-gray-500 py-2 rounded-md">
+                {/* <button className="flex items-center justify-center w-full border border-gray-300 hover:border-gray-500 py-2 rounded-md">
                   <img className="w-5 mr-2" src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google logo" />
                   Sign in with Google
-                </button>
+                </button> */}
               </div>
             </form>
 
-            <div className="text-center mt-6">
+            <div className="text-center mt-4">
               <span className="text-sm text-gray-500">Don't have account?</span>
               <Link to="/signup" className="text-sm font-semibold text-[#41A4FF] ml-1">Sign up</Link>
             </div>
 
-            {error && <p className="text-sm text-center text-red-600 mt-3">{error}</p>}
+            {/* {error && <p className="text-sm text-center text-red-600 mt-3">{error}</p>} */}
           </div>
         </div>
 
