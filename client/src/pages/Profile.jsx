@@ -5,9 +5,6 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  logOutStart,
-  logOutSuccess,
-  logOutFailure,
   deleteUserAccountStart,
   deleteUserAccountSuccess,
   deleteUserAccountFailure,
@@ -19,9 +16,6 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import MyBookings from "./user/MyBookings";
-import UpdateProfile from "./user/UpdateProfile";
-import MyHistory from "./user/MyHistory";
 import toast, { Toaster } from 'react-hot-toast';
 
 const Profile = () => {
@@ -203,12 +197,7 @@ const Profile = () => {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center">
-                {/* <button
-                  onClick={handleLogout}
-                  className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-colors duration-200"
-                >
-                  Log out
-                </button> */}
+
                 <Link
                   to="/profile/editprofile"
                   className="w-full sm:w-auto mb-2 sm:mb-0 px-4 py-2 border border-[#41A4FF] text-[#41A4FF] rounded-md hover:bg-[#41A4FF] hover:text-white transition-colors duration-200 text-center"

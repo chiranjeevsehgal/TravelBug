@@ -18,7 +18,6 @@ import {
   FaCar,
   FaHiking,
 } from "react-icons/fa";
-import { CiCircleInfo } from "react-icons/ci";
 
 import Rating from "@mui/material/Rating";
 import { useSelector } from "react-redux";
@@ -63,7 +62,7 @@ const Package = () => {
   });
   const [packageRatings, setPackageRatings] = useState([]);
   const [ratingGiven, setRatingGiven] = useState(false);
-  const [showChat, setShowChat] = useState(false); // State to control chat visibility
+  const [showChat, setShowChat] = useState(false); 
 
   const handleCloseChat = () => {
     setShowChat(false);

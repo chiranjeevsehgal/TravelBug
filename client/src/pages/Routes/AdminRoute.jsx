@@ -17,10 +17,7 @@ export default function AdminRoute() {
         "Content-Type": "application/json",
       },
     });
-    console.log("Admin auth response:", res);
-    console.log("Cookies sent with request:", document.cookie);
     const data = await res.json();
-    console.log("Admin auth data:", data);
     if (data.check) setOk(true);
     else setOk(false);
   };

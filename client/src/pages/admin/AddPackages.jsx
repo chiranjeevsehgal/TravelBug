@@ -7,7 +7,6 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import toast, { Toaster } from 'react-hot-toast';
-import { CiCircleInfo } from "react-icons/ci";
 
 const AddPackages = () => {
   const [formData, setFormData] = useState({

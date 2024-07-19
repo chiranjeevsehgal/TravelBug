@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 const Hero2 = () => {
   return (
     <>
-      <div class="md:px-36 px-8 md:py-28 py-5">
-        <div class="flex lg:flex-row flex-col grid-cols-2 gap-10">
-          <div class="flex flex-col gap-5 justify-center p-5">
-            <h1 class="text-4xl md:text-5xl font-bold">Revolutionize</h1>
-            <h1 class="text-4xl md:text-5xl font-bold">your Travel with</h1>
-            <h1 class="text-4xl md:text-6xl font-bold text-[#41A4FF]">
+      <div className="md:px-36 px-8 md:py-28 py-5">
+        <div className="flex lg:flex-row flex-col grid-cols-2 gap-10">
+          <div className="flex flex-col gap-5 justify-center p-5">
+            <h1 className="text-4xl md:text-5xl font-bold">Revolutionize</h1>
+            <h1 className="text-4xl md:text-5xl font-bold">your Travel with</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-[#41A4FF]">
             AI Voyages
             </h1>
-            <p class="mt-4">
+            <p className="mt-4">
             Embark on intelligent adventures with AI-enhanced travel, personalizing your journey every step of the way.
             </p>
             <div className="mt-8">
@@ -27,11 +27,11 @@ const Hero2 = () => {
             </Link>
           </div>
           </div>
-          <div class="">
+          <div className="">
             <img
               src="images/main.jpg"
               alt="heroimg"
-              class="rounded-3xl h-[100%] w-full object-cover"
+              className="rounded-3xl h-[100%] w-full object-cover"
             />
           </div>
         </div>

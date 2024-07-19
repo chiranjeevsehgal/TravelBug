@@ -49,23 +49,23 @@ function RecommendationModal({ open, onClose, recommendation, loading }) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogContent>
-      {loading ? (
-        <div className="flex flex-col items-center justify-center h-64 space-y-4">
-    <div className="relative">
-      <div className="w-24 h-24 border-t-4 border-b-4 border-blue-500 rounded-full animate-spin"></div>
-      <div className="w-24 h-24 border-r-4 border-l-4 border-pink-500 rounded-full animate-spin absolute top-0 left-0 animate-ping"></div>
-    </div>
-    <p className="text-lg font-semibold text-gray-700 animate-pulse">
-      Crafting your perfect adventure...
-    </p>
-    <div className="flex space-x-2">
-      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
-      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-      <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-    </div>
-  </div>
-) : (
-  <DialogContentText component="div">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-64 space-y-4">
+            <div className="relative">
+              <div className="w-24 h-24 border-t-4 border-b-4 border-blue-500 rounded-full animate-spin"></div>
+              <div className="w-24 h-24 border-r-4 border-l-4 border-pink-500 rounded-full animate-spin absolute top-0 left-0"></div>
+            </div>
+            <p className="text-lg font-semibold text-gray-700 animate-pulse">
+              Crafting your perfect adventure...
+            </p>
+            <div className="flex space-x-2">
+              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+              <div className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+            </div>
+          </div>
+        ) : (
+          <DialogContentText component="div">
             <DialogTitle>Your Travel Recommendations</DialogTitle>
             <ul style={{ paddingLeft: '20px', listStyleType: 'none' }}>
               {formatText(recommendation)}
@@ -88,12 +88,11 @@ export default function ScrollDialog() {
     travelers: '',
     budget: '',
     activities: [],
-    preferences: ''
+    // preferences: ''
   });
   const [packageDestinations, setPackageDestinations] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [openRecommendation, setOpenRecommendation] = useState(false);
-
   const [loading, setLoading] = useState(false);
 
   const months = [
@@ -111,6 +110,10 @@ export default function ScrollDialog() {
     { value: 'dec', label: 'December' },
   ];
 
+  const isFormValid = () => {
+    return formData.month && formData.travelers > 0 && formData.budget && formData.activities.length > 0;
+  };
+
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
     setScroll(scrollType);
@@ -123,7 +126,7 @@ export default function ScrollDialog() {
       travelers: '',
       budget: '',
       activities: [],
-      preferences: ''
+      // preferences: ''
     });
   };
 
@@ -151,9 +154,13 @@ export default function ScrollDialog() {
   };
 
   const handleGetRecommendations = async () => {
-    const templateString = `We are total ${formData.travelers} people and want to travel in the month of ${formData.month}. Activities interested in: ${formData.activities.join(", ")}, having ${formData.budget} budget, ${formData.preferences}.`;
-    console.log(templateString);
+    if (!isFormValid()) {
+      alert('Please fill in all required fields.');
+      return;
+    }
 
+    const templateString = `We are a group of ${formData.travelers} traveling in ${formData.month}. We are interested in ${formData.activities.join(", ")}, with a ${formData.budget} budget. Please suggest the top 3 destinations for us.`;
+    
     handleClose(); // Close the input modal
     setLoading(true);
     setOpenRecommendation(true); // Open the recommendation modal immediately
@@ -168,7 +175,7 @@ export default function ScrollDialog() {
       const response = await axios.post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${import.meta.env.VITE_API_GENERATIVE_LANGUAGE_CLIENT}`,
         {
-          contents: [{ parts: [{ text: `${message} among places ${packageDestinations} (give top 3 places to travel and response in brief)` }] }],
+          contents: [{ parts: [{ text: `${message} among places ${packageDestinations} (provide brief responses)` }] }],
         }
       );
       return response.data.candidates[0].content.parts[0].text;
@@ -298,7 +305,7 @@ export default function ScrollDialog() {
             ))}
           </FormGroup>
 
-          <TextField
+          {/* <TextField
             fullWidth
             margin="normal"
             label="Any specific preferences?"
@@ -309,11 +316,16 @@ export default function ScrollDialog() {
             onChange={handleInputChange}
             variant="outlined"
             InputLabelProps={{ shrink: true }}
-          />
+          /> */}
         </DialogContent>
         <DialogActions className="p-4">
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleGetRecommendations}>Generate</Button>
+          <Button
+            onClick={handleGetRecommendations}
+            disabled={!isFormValid()}
+          >
+            Generate
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -329,4 +341,3 @@ export default function ScrollDialog() {
     </React.Fragment>
   );
 }
-

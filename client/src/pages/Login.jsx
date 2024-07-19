@@ -18,18 +18,12 @@ const Login = () => {
     password: "",
   });
 
-  const [generatedOTP, setGeneratedOTP] = useState();
-
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
-
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +39,7 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log("Login response:", data);
+      
       if (data?.success) {
         dispatch(loginSuccess(data?.user));
         
@@ -84,8 +78,7 @@ const Login = () => {
         credentials: "include",
         body: JSON.stringify({ userId, otp: sixDigitCode, expiresAt: expiresAt.toISOString() }),
       });
-      console.log(JSON.stringify({ userId, otp: sixDigitCode, expiresAt }));
-      console.log({ userId, otp: sixDigitCode, expiresAt });
+      
       const data = await res.json();
       if (data.success) {
         await navigations(sixDigitCode);
@@ -121,7 +114,7 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log("Email sent successfully.");
+      
     } catch (error) {
       console.log(error);
       console.error("Error sending email:", error);
@@ -271,10 +264,7 @@ const Login = () => {
                 >
                   {loading ? "Signing in..." : "Sign in"}
                 </button>
-                {/* <button className="flex items-center justify-center w-full border border-gray-300 hover:border-gray-500 py-2 rounded-md">
-                  <img className="w-5 mr-2" src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google logo" />
-                  Sign in with Google
-                </button> */}
+                
               </div>
             </form>
 

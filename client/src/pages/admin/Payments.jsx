@@ -59,13 +59,13 @@ const Payments = () => {
 
   const handleUserDelete = async (bookingId) => {
     const CONFIRM = window.confirm(
-      "Are you sure? The booking will be permanently deleted!"
+      "Are you sure? The details will be permanently deleted!"
     );
     if (CONFIRM) {
       try {
         setLoading(true);
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-        const res = await fetch(`${API_BASE_URL}/api/booking/get-allBookings?searchTerm=${search}`, {
+        const res = await fetch(`${API_BASE_URL}/api/booking/delete-booking-history/${bookingId}/${currentUser._id}`, {
           method: "DELETE",
           credentials: "include"
         });

@@ -14,8 +14,6 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [allPackages, setAllPackages] = useState([]);
   const [showMoreBtn, setShowMoreBtn] = useState(false);
-  //   console.log(listings);
-
 
 
   useEffect(() => {
@@ -162,36 +160,36 @@ const Search = () => {
       </div>
       {/* ------------------------------------------------------------------------------- */}
       <div className="flex-1">
-  <div className="w-full p-5">
-    {!loading && allPackages.length === 0 && (
-      <p className="text-xl text-slate-700">No Packages Found!</p>
-    )}
-    {loading && (
-      <div className="flex justify-center items-center w-full">
-        <ClipLoader color="#4A90E2" loading={loading} size={40} />
+        <div className="w-full p-5">
+          {!loading && allPackages.length === 0 && (
+            <p className="text-xl text-slate-700">No Packages Found!</p>
+          )}
+          {loading && (
+            <div className="flex justify-center items-center w-full">
+              <ClipLoader color="#4A90E2" loading={loading} size={40} />
+            </div>
+          )}
+          <div className="w-full flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4">
+            {!loading &&
+              allPackages &&
+              allPackages.map((packageData, i) => (
+                <PackageCard key={i} packageData={packageData} />
+              ))}
+          </div>
+        </div>
+        {showMoreBtn && (
+          <div className="flex justify-center mt-8 mb-12">
+            <button
+              onClick={onShowMoreSClick}
+              className="bg-[#41A4FF] text-white py-3 px-6 rounded-lg hover:bg-[#3B93E6] transition duration-300 ease-in-out shadow-md"
+            >
+              Show More
+            </button>
+          </div>
+        )}
       </div>
-    )}
-    <div className="w-full flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4">
-      {!loading &&
-        allPackages &&
-        allPackages.map((packageData, i) => (
-          <PackageCard key={i} packageData={packageData} />
-        ))}
     </div>
-  </div>
-  {showMoreBtn && (
-  <div className="flex justify-center mt-8 mb-12">
-    <button
-      onClick={onShowMoreSClick}
-      className="bg-[#41A4FF] text-white py-3 px-6 rounded-lg hover:bg-[#3B93E6] transition duration-300 ease-in-out shadow-md"
-    >
-      Show More
-    </button>
-  </div>
-)}
-</div>
-      </div>
-    
+
   );
 };
 

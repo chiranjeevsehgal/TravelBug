@@ -19,7 +19,6 @@ import { app } from "../../firebase";
 import toast, { Toaster } from 'react-hot-toast';
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);

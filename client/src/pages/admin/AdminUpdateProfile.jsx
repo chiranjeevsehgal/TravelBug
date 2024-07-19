@@ -9,7 +9,6 @@ import {
   updatePassFailure,
 } from "../../redux/user/userSlice";
 import toast, { Toaster } from 'react-hot-toast';
-import { CiCircleInfo } from "react-icons/ci";
 
 
 const AdminUpdateProfile = () => {

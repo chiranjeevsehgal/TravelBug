@@ -111,7 +111,7 @@ const RatingCard = ({ packageRatings }) => {
                   </div>
                 </div>
               )}
-              {/* full review */}
+              
             </div>
           );
         })}

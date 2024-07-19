@@ -79,11 +79,6 @@ const Signup = () => {
                 <input type="password" id="password" placeholder="Enter your password" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} />
               </div>
 
-              {/* <div className="mb-4">
-                <label className="block text-sm font-semibold mb-1" htmlFor="address">Address</label>
-                <textarea id="address" placeholder="Enter your address" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} />
-              </div> */}
-
               <div className="mb-8">
                 <label className="block text-sm font-semibold mb-1" htmlFor="phone">Phone</label>
                 <input type="tel" id="phone" placeholder="Enter your phone number" className="block w-full rounded-md border border-gray-300 focus:border-[#41A4FF] focus:outline-none focus:ring-1 focus:ring-[#41A4FF] py-2 px-3 text-gray-700" onChange={handleChange} pattern="[0-9]{10}" title="Phone number should be of 10 digits"/>
@@ -96,10 +91,7 @@ const Signup = () => {
               >
                 {loading ? "Signing up..." : "Sign up"}
               </button>
-              {/* <button className="flex items-center justify-center w-full border border-gray-300 hover:border-gray-500 py-2 rounded-md">
-                <img className="w-5 h-5 mr-2" src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google logo" />
-                Sign up with Google
-              </button> */}
+              
             </form>
             {/* {error && <p className="text-sm text-center text-red-600 mt-3">{error}</p>} */}
             <div className="text-center mt-2">

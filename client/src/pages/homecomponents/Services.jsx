@@ -1,9 +1,7 @@
 import React from "react";
-import { FaHotel } from "react-icons/fa";
 import { MdTour } from "react-icons/md";
 import { AiOutlineRobot } from "react-icons/ai";
-import { BiRestaurant, BiMap } from "react-icons/bi";
-import { BsCalendarEvent } from "react-icons/bs";
+import { BiMap } from "react-icons/bi";
 
 const categories = [
   {
@@ -12,9 +10,9 @@ const categories = [
     description: "Explore curated tour packages for unforgettable experiences.",
   },
   {
-    name: "Customized Itinerary Creation",
+    name: "AI-Powered Destination Recommender",
     icon: <BiMap />,
-    description: "Tailor-made travel plans to suit your preferences and schedule.",
+    description: "Receive personalized destination suggestions based on AI insights.",
   },
   {
     name: "AI Assistant for Travel Queries",

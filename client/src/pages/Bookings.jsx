@@ -1,37 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  updateUserStart,
-  updateUserSuccess,
-  updateUserFailure,
-  logOutStart,
-  logOutSuccess,
-  logOutFailure,
-  deleteUserAccountStart,
-  deleteUserAccountSuccess,
-  deleteUserAccountFailure,
-} from "../redux/user/userSlice";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../firebase";
 import MyBookings from "./user/MyBookings";
-import UpdateProfile from "./user/UpdateProfile";
 import MyHistory from "./user/MyHistory";
 import toast, { Toaster } from 'react-hot-toast';
 
 
 const Bookings = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
-  const [profilePhoto, setProfilePhoto] = useState(undefined);
-  const [photoPercentage, setPhotoPercentage] = useState(0);
+
   const [activePanelId, setActivePanelId] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
