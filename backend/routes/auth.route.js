@@ -11,6 +11,7 @@ const router = express.Router();
 //test route
 router.get("/test", test);
 
+
 //signup route
 router.post("/signup", signupController);
 

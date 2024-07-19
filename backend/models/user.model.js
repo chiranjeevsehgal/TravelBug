@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
+      required: false,
     },
     phone: {
       type: String,
@@ -32,6 +32,20 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    otp: {
+      code: {
+        type: String,
+        default: null
+      },
+      expiresAt: {
+        type: Date,
+        default: null
+      }
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
+    }    
   },
   { timestamps: true }
 );

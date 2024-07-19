@@ -12,7 +12,7 @@ export const signupController = async (req, res) => {
   try {
     const { username, email, password, address, phone } = req.body;
 
-    if (!username || !email || !password || !address || !phone) {
+    if (!username || !email || !password || !phone) {
       return res.status(200).send({
         success: false,
         message: "All fields are required!",
@@ -78,14 +78,20 @@ export const loginController = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-    const { password: pass, ...rest } = validUser._doc; //deselcting password to send user(this will send all data accept password)
-    res.cookie("access_token", token, { httpOnly: true }).status(200).send({
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const { password: pass, ...rest } = validUser._doc; //deselcting password to send user(this will send all data except password)
+    res.cookie("access_token", token, { 
+      httpOnly: true,  
+      secure: true, // for HTTPS
+      sameSite: 'None',
+      
+      })
+    .status(200).send({
       success: true,
-      message: `Login Success ${token}`,
+      message: "Login Success",
       user: rest,
+      
     });
-    
   } catch (error) {
     console.log(error);
   }
