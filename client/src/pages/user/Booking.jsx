@@ -247,8 +247,8 @@ const Booking = () => {
               <p className="text-lg font-semibold text-gray-700">Price:</p>
               {packageData.packageOffer ? (
                 <div className="flex items-center">
-                  <span className="line-through text-gray-500 mr-2">${packageData.packagePrice}</span>
-                  <span className="text-green-700 font-bold">${packageData.packageDiscountPrice}</span>
+                  <span className="line-through text-gray-500 mr-2">Rs. {packageData.packagePrice}</span>
+                  <span className="text-green-700 font-bold">Rs. {packageData.packageDiscountPrice}</span>
                   <span className="ml-2 bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
                     {Math.floor(((+packageData.packagePrice - +packageData.packageDiscountPrice) / +packageData.packagePrice) * 100)}% Off
                   </span>

@@ -295,6 +295,7 @@ const AddPackages = () => {
               type="number"
               className="border border-gray-300 rounded p-2 mt-1 focus:border-blue-500 focus:outline-none"
               id="packagePrice"
+              min={1}
               value={formData.packagePrice}
               onChange={handleChange}
             />
@@ -312,6 +313,7 @@ const AddPackages = () => {
           <div className={`${formData.packageOffer ? "flex flex-col w-full mb-3" : "hidden"}`}>
             <label htmlFor="packageDiscountPrice" className="text-lg font-semibold">Discount Price:</label>
             <input
+            min={1}
               type="number"
               className="border border-gray-300 rounded p-2 mt-1 focus:border-blue-500 focus:outline-none"
               id="packageDiscountPrice"

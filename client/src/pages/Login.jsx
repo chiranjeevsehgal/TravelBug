@@ -261,11 +261,9 @@ const Login = () => {
                 />
               </div>
 
-              <div className="mb-3 flex flex-wrap content-center justify-end">
-                <a href="#" className="text-xs font-semibold text-[#41A4FF]">Forgot password?</a>
-              </div>
+              
 
-              <div className="mb-3">
+              <div className="mb-3 mt-8">
                 <button
                   type="submit"
                   disabled={loading}

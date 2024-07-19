@@ -208,7 +208,7 @@ const UpdateProfile = () => {
           toast.error(data?.message);
         }
       } else {
-        dispatch(updatePassSuccess());
+        
         toast.success(data?.message);
         setUpdatePassword({
           oldpassword: "",
