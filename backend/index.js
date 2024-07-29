@@ -44,7 +44,7 @@ app.use("/api/rating", ratingRoute);
 app.use("/api/booking", bookingRoute);
 
 app.get("/", (req, res) => {
-  res.send("Travel and tourism API is running");
+  res.send("TravelBug API is running");
 });
 
 // New route for sending email
@@ -70,23 +70,6 @@ app.post('/send-email', async (req, res) => {
     res.status(500).json({ error: 'Failed to send email' });
   }
 });
-
-// //rest api
-// app.use("/", (req, res) => {
-//   res.send("Welcome to travel and tourism app");
-// });
-
-//static files
-// app.use(express.static(path.join(__dirname, "/client/dist")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-// });
-
-//port
-// app.listen(8000, () => {
-//   console.log("listening on 8000");
-// });
 
 export default app;
 
