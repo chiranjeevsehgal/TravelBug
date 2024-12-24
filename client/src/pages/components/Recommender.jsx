@@ -305,18 +305,7 @@ export default function ScrollDialog() {
             ))}
           </FormGroup>
 
-          {/* <TextField
-            fullWidth
-            margin="normal"
-            label="Any specific preferences?"
-            multiline
-            rows={4}
-            name="preferences"
-            value={formData.preferences}
-            onChange={handleInputChange}
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-          /> */}
+          
         </DialogContent>
         <DialogActions className="p-4">
           <Button onClick={handleClose}>Cancel</Button>

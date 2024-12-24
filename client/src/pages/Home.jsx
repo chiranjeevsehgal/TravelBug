@@ -17,17 +17,10 @@ const Home = () => {
       <Aboutus />
       <Services />
       <Hero3 />
-      <Footer />
+      {/* <Footer /> */}
       <div className="fixed bottom-4 right-4 z-50">
         < ScrollDialog/>
-      {/* <Fab
-        onClick={handleFabClick}
-        color="primary"
-        aria-label="edit"
-        className="bottom-4 right-4"
-      >
-        <TbMessageChatbot size={24}/>
-      </Fab> */}
+      
       </div>
     </div>
   );
