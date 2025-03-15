@@ -209,7 +209,7 @@ const Login = () => {
               </p>
               <div class="footer">
                 <p class="textFooter">Regards,</p>
-                <strong><p class="textFooter">Chiranjeev Sehgal</p></strong>
+                <strong><p class="textFooter">TravelBug</p></strong>
               </div>
             </div>
           </body>
