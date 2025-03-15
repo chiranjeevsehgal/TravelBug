@@ -173,7 +173,7 @@ export default function ScrollDialog() {
   async function generateAnswer(message) {
     try {
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${import.meta.env.VITE_API_GENERATIVE_LANGUAGE_CLIENT}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${import.meta.env.VITE_API_GENERATIVE_LANGUAGE_CLIENT}`,
         {
           contents: [{ parts: [{ text: `${message} among places ${packageDestinations} (provide brief responses)` }] }],
         }
