@@ -5,7 +5,7 @@ const Footer = () => {
     <div className="w-full bg-black py-8 px-10 grid md:grid-cols-1 gap-8 text-gray-300 bottom-0">
         <div className="flex justify-center">
 
-        <p >Developed by Chiranjeev Sehgal &copy;</p>
+        <p >TravelBug &copy;</p>
         </div>
     </div>
   );

@@ -16,8 +16,7 @@ const MyHistory = () => {
 
   useEffect(()=>{
     setLoading(true)
-    // setTimeout(()=>{
-    // },2000)
+    
   },[])
 
   const getAllBookings = async () => {
