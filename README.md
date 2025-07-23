@@ -16,6 +16,9 @@ cd TravelBug
 ## Backend Configuration
 
 **Environment File**: Navigate to the `backend` folder and create `.env` file. Add the following content to the file:
+    
+    #Server Configuration
+    PORT=5000
 
     #MongoDB Variables
     MONGO_URL = 
@@ -32,6 +35,10 @@ cd TravelBug
     #Resend Variable 
     RESEND_API_KEY= 
 
+    #Gemini Variables
+    GEMINI_API_KEY=
+    GEMINI_MODEL=gemini-2.5-flash-lite
+
  - Create accounts at MongoDB, Paypal Braintree and Resend to setup the keys. `JWT_SECRET` can be any secret or randomly generated key.  
   
 
@@ -46,9 +53,6 @@ cd TravelBug
     VITE_FIREBASE_storageBucket = 
     VITE_FIREBASE_messagingSenderId = 
     VITE_FIREBASE_appId = 
-    
-    # Gemini API Key
-    VITE_API_GENERATIVE_LANGUAGE_CLIENT = 
     
     # URL where backend application is running
     VITE_API_BASE_URL=

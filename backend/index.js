@@ -5,6 +5,7 @@ import userRoute from "./routes/user.route.js";
 import packageRoute from "./routes/package.route.js";
 import ratingRoute from "./routes/rating.route.js";
 import bookingRoute from "./routes/booking.route.js";
+import insightsRoute from "./routes/ai-insights.route.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
@@ -42,19 +43,20 @@ app.use("/api/user", userRoute);
 app.use("/api/package", packageRoute);
 app.use("/api/rating", ratingRoute);
 app.use("/api/booking", bookingRoute);
+app.use('/api/ai-insights', insightsRoute);
 
 app.get("/", (req, res) => {
   res.send("TravelBug API is running");
 });
 
-// New route for sending email
+// Route for sending email
 
 app.post('/send-email', async (req, res) => {
   const { to, subject, html } = req.body;
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "developers@onclique.tech",
+      from: "developers@buildfolio.in",
       to: [to],
       subject,
       html,
@@ -71,5 +73,9 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-export default app;
+const PORT = process.env.PORT ;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
 
+export default app;
